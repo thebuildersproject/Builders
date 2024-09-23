@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'main.dart'; // Import the file where MyHomePage is defined
 
 class HomePage extends StatelessWidget {
+  const HomePage({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,6 +22,7 @@ class HomePage extends StatelessWidget {
             ],
           ),
         ),
+        //Login Page
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -101,7 +103,7 @@ class HomePage extends StatelessWidget {
                         ),
                       )),
                       const SizedBox(height: 40),
-                      FadeAnimation(delay:1.5,child: const Text("Forgot Password?", style: TextStyle(color: Colors.grey),)),
+                      const FadeAnimation(delay:1.5,child: Text("Forgot Password?", style: TextStyle(color: Colors.grey),)),
                       const SizedBox(height: 40),
                       FadeAnimation(delay:1.6,child:Container(
                         height: 50,
@@ -110,6 +112,7 @@ class HomePage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(50),
                           color: Colors.greenAccent,
                         ),
+                        //Button to take to MyHomePage
                         child: TextButton(
                           onPressed: () {
                             // Navigate to MyHomePage when the Login button is pressed
@@ -131,7 +134,7 @@ class HomePage extends StatelessWidget {
                         ),
                       )),
                       const SizedBox(height: 50),
-                      FadeAnimation(delay: 1.7,child: Text("Continue with social media", style: TextStyle(color: Colors.grey),)),
+                      const FadeAnimation(delay: 1.7,child: Text("Continue with social media", style: TextStyle(color: Colors.grey),)),
                       const SizedBox(height: 30),
                       const SizedBox(height: 80),
                       Row(

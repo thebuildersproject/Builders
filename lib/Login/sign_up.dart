@@ -1,3 +1,4 @@
+import 'package:buildingapp/Login/login.dart';
 import 'package:flutter/material.dart';
 
 class SignUp extends StatefulWidget{
@@ -111,6 +112,8 @@ class _SignUpState extends State<SignUp>{
                     validator: (value){
                       if(value!.isEmpty){
                         return "password required";
+                      }else if(password.text !=confirmPassword.text ){
+                        return "Passwords do not match";
                       }
                       return null;
                     },
@@ -161,7 +164,7 @@ class _SignUpState extends State<SignUp>{
                     TextButton(onPressed: () {
                       //Navigate to sign up
                       Navigator.push(context, MaterialPageRoute(
-                          builder: (context)=>const SignUp()));
+                          builder: (context)=>const LoginScreen()));
                     },
                         child: const Text("Login"))
                   ],

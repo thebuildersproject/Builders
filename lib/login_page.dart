@@ -1,7 +1,9 @@
+import 'package:buildingapp/Animations/fade_animation.dart';
 import 'package:flutter/material.dart';
 import 'main.dart'; // Import the file where MyHomePage is defined
 
 class HomePage extends StatelessWidget {
+  const HomePage({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,6 +22,7 @@ class HomePage extends StatelessWidget {
             ],
           ),
         ),
+        //Login Page
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -29,9 +32,9 @@ class HomePage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text("Login", style: TextStyle(color: Colors.white, fontSize: 40)),
+                  FadeAnimation(delay: 1, child: Text("Login", style: TextStyle(color: Colors.white, fontSize: 40),)),
                   SizedBox(height: 10),
-                  Text("Welcome Back", style: TextStyle(color: Colors.white, fontSize: 18)),
+                  FadeAnimation(delay: 1.3,child: Text("Welcome Back", style: TextStyle(color: Colors.white, fontSize: 18),)),
                 ],
               ),
             ),
@@ -51,7 +54,7 @@ class HomePage extends StatelessWidget {
                   child: Column(
                     children: <Widget>[
                       const SizedBox(height: 60),
-                      Container(
+                      FadeAnimation(delay:1.4, child:Container(
                         padding: const EdgeInsets.all(30),
                         decoration: BoxDecoration(
                           color: Colors.white,
@@ -98,17 +101,18 @@ class HomePage extends StatelessWidget {
                             ),
                           ],
                         ),
-                      ),
+                      )),
                       const SizedBox(height: 40),
-                      const Text("Forgot Password?", style: TextStyle(color: Colors.grey)),
+                      const FadeAnimation(delay:1.5,child: Text("Forgot Password?", style: TextStyle(color: Colors.grey),)),
                       const SizedBox(height: 40),
-                      Container(
+                      FadeAnimation(delay:1.6,child:Container(
                         height: 50,
                         margin: const EdgeInsets.symmetric(horizontal: 50),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
                           color: Colors.greenAccent,
                         ),
+                        //Button to take to MyHomePage
                         child: TextButton(
                           onPressed: () {
                             // Navigate to MyHomePage when the Login button is pressed
@@ -128,15 +132,15 @@ class HomePage extends StatelessWidget {
                             ),
                           ),
                         ),
-                      ),
+                      )),
                       const SizedBox(height: 50),
-                      const Text("Continue with social media", style: TextStyle(color: Colors.grey)),
+                      const FadeAnimation(delay: 1.7,child: Text("Continue with social media", style: TextStyle(color: Colors.grey),)),
                       const SizedBox(height: 30),
                       const SizedBox(height: 80),
                       Row(
                         children: <Widget>[
                           Expanded(
-                            child: Container(
+                            child: FadeAnimation(delay:1.8,child: Container(
                               height: 50,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(50),
@@ -148,11 +152,11 @@ class HomePage extends StatelessWidget {
                                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                                 ),
                               ),
-                            ),
+                            )),
                           ),
                           const SizedBox(width: 30),
                           Expanded(
-                            child: Container(
+                            child: FadeAnimation(delay: 1.9, child: Container(
                               height: 50,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(50),
@@ -164,7 +168,7 @@ class HomePage extends StatelessWidget {
                                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                                 ),
                               ),
-                            ),
+                            )),
                           ),
                         ],
                       ),

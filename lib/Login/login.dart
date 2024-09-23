@@ -25,9 +25,9 @@ class _LoginScreenState extends State<LoginScreen> {
               padding: const EdgeInsets.all(10.0),
           child: Column(
             children: [
-
-
               //Username field
+
+          //image.asset()
               Container(
                 margin: EdgeInsets.all(8),
                 padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -68,11 +68,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         : Icons.visibility_off))),
                   ),
                 ),
-              ),
             ],
           ),),
         ),
       ),
-    )
+    );
   }
 }

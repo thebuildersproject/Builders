@@ -22,7 +22,7 @@ class _SignUpState extends State<SignUp>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //SingleChildScrollView to have scoll in screen
+      //SingleChildScrollView to have scroll in screen
       body: Center(
         child: SingleChildScrollView(
           child: Form(

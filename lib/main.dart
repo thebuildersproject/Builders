@@ -1,5 +1,7 @@
+import 'package:buildingapp/Login/login.dart';
 import 'package:flutter/material.dart';
-import 'login_page.dart'; // Imports login page
+
+
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +18,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.grey),
         useMaterial3: true,
       ),
-      home: HomePage(), // Set HomePage from login_page.dart as the initial screen
+      home: const LoginScreen(), // Set HomePage from login_page.dart as the initial screen
     );
   }
 }

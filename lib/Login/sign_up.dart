@@ -1,4 +1,5 @@
 import 'package:buildingapp/Login/login.dart';
+import 'package:buildingapp/SQLite/sqlite.dart';
 import 'package:flutter/material.dart';
 
 class SignUp extends StatefulWidget{
@@ -148,6 +149,17 @@ class _SignUpState extends State<SignUp>{
                       onPressed: () {
                         if (formKey.currentState!.validate()){
                           //Login method here
+
+                          final db= DatabaseHelper();
+                          db.signup(Users(
+                              usrName: username.text, 
+                              usrPassword: password.text))
+                              .whenComplete((){
+                                Navigator.push(
+                                    context, MaterialPageRoute(
+                                    builder: (context) =>
+                                    const LoginScreen()));
+                          });
                         }
                       },
                       child: const Text(

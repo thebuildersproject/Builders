@@ -1,6 +1,7 @@
 //Future login page
 import 'package:flutter/material.dart';
-import 'sign_up.dart';
+import 'package:buildingapp/Login/sign_up.dart';
+import 'package:buildingapp/SQLite/sqlite.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -11,12 +12,32 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
 
-  //Text editors for when text inputed
+  //Text editors for when text is input
   final username = TextEditingController();
   final password = TextEditingController();
 
   //Bool to show and hide password
   bool isVisible =false;
+
+  //Bool variable to hide red text
+  bool isLoginTrue =false;
+
+  final db= DatabaseHelper();
+
+  login() async {
+    var response= await db
+        .login(Users(usrName: username.text, usrPassword: password.text));
+    if (response ==true) {
+      //If login is correct go to parking app
+      if (!mounted) return;
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Notes()));
+    }else{
+      //Show error message if not true
+      setState(() {
+        isLoginTrue =true;
+      });
+    }
+  }
 
   //Create global key for form
   final formKey= GlobalKey<FormState>();
@@ -27,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: SingleChildScrollView(
           child: Padding(
               padding: const EdgeInsets.all(10.0),
-          //All textfield in form to not allow empty entry
+          //All text field in form to not allow empty entry
           child:Form(
             key: formKey,
             child: Column(
@@ -109,6 +130,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: () {
                   if (formKey.currentState!.validate()){
                     //Login method here
+                    login();
+
                   }
                 },
                   child: const Text(
@@ -129,7 +152,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                       child: const Text("SIGN UP"))
                 ],
+              ),
+
+              //Make this a trigger
+              isLoginTrue? const Text(
+                "Username or password is incorrect",
+                style: TextStyle(color: Colors.red),
               )
+                  :const SizedBox(),
             ]
             ),
           ),

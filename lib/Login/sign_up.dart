@@ -1,6 +1,7 @@
 import 'package:buildingapp/Login/login.dart';
 import 'package:buildingapp/SQLite/sqlite.dart';
 import 'package:flutter/material.dart';
+import 'package:buildingapp/JsonModels/users.dart';
 
 class SignUp extends StatefulWidget{
   const SignUp({super.key});

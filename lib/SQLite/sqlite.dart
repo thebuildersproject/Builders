@@ -1,44 +1,56 @@
 import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:buildingapp/JsonModels/users.dart'; // Ensure this path is correct
 
-//Watch dude's videos part 1 and 2 for other stuff meant to be in here
 class DatabaseHelper {
-  final databaseName = "notes.db";
-  String noteTable=
-      "CREATE TABLE notes (noteId INTEGER PRIMARY KEY AUTOINCREMENET, noteTitle TEXT NOT NULL, ";)
-}
+  static final DatabaseHelper _instance = DatabaseHelper._internal();
+  factory DatabaseHelper() => _instance; // Singleton pattern
+  DatabaseHelper._internal();
 
-//Create our user table in sqlite db
-String users=
-    "create table users (usrId INTEGER PRIMARY KEY AUTOINCREMENT, usrName TEXT UNIQUE, usrPassword TEXT)";
+  Database? _database; // Private database instance
+  final String databaseName = "users.db";
 
-Future<Database> initDB() async{
-  final databasePath = await getDatabasesPath();
-  final path = join(databasePath, databaseName);
+  // SQL command to create the users table
+  final String usersTable =
+      "CREATE TABLE users (usrId INTEGER PRIMARY KEY AUTOINCREMENT, usrName TEXT UNIQUE, usrPassword TEXT)";
 
-  return openDatabase(path, version: 1, onCreate: (db, version) async{
-    await db.execute(users);
-    await db.exectue(noteTable);
-  });
-}
+  // Initialize the database
+  Future<Database> initDB() async {
+    if (_database != null) return _database!; // Return existing database if initialized
+    final databasePath = await getDatabasesPath();
+    final path = join(databasePath, databaseName);
 
-
-//Login methods
-
-Future<bool> login(Users user) async{
-  final Database db = await initDB();
-
-  var result = await db.rawQuery("select * from users where usrName= '${user.usrName}' AND usrPassword = '${user.usrPassword}'");
-  if(result.isNotEmpty){
-    return true;
-  }else{
-    return false;
+    // Open the database and create it if it doesn't exist
+    _database = await openDatabase(path, version: 1, onCreate: (db, version) async {
+      await db.execute(usersTable);
+    });
+    return _database!;
   }
-}
 
-//Sign up
-Future<int> signup()async{
-  final Database db = await initDB();
+  // Login method
+  Future<bool> login(Users user) async {
+    final Database db = await initDB();
+    try {
+      // Query the database to check if the username and password match
+      var result = await db.rawQuery(
+          "SELECT * FROM users WHERE usrName = ? AND usrPassword = ?",
+          [user.usrName, user.usrPassword]);
+      return result.isNotEmpty; // Return true if the result is not empty
+    } catch (e) {
+      print("Login error: $e"); // Print error if occurs
+      return false; // Return false in case of an error
+    }
+  }
 
-  return db.inser('users', user.toMap());
-
+  // Sign up method
+  Future<int> signup(Users user) async {
+    final Database db = await initDB();
+    try {
+      // Insert the new user into the users table
+      return await db.insert('users', user.toMap());
+    } catch (e) {
+      print("Signup error: $e"); // Print error if occurs
+      return -1; // Return -1 to indicate failure
+    }
+  }
 }

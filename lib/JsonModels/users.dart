@@ -1,6 +1,6 @@
-//Create users  Json Models
+// Create users Json Models
 class Users {
-  final int? usrId;
+  final int? usrId; // Changed this from usrID to usrId for consistency
   final String usrName;
   final String usrPassword;
 
@@ -11,13 +11,13 @@ class Users {
   });
 
   factory Users.fromMap(Map<String, dynamic> json) => Users(
-    usrId: json["usrID"],
+    usrId: json["usrId"], // Changed this from usrID to usrId
     usrName: json["usrName"],
     usrPassword: json["usrPassword"],
   );
 
   Map<String, dynamic> toMap() => {
-    "usrID": usrId,
+    "usrId": usrId, // Changed this from usrID to usrId
     "usrName": usrName,
     "usrPassword": usrPassword,
   };

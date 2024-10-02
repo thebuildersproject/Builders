@@ -1,11 +1,9 @@
 import 'package:buildingapp/Login/login.dart';
 import 'package:flutter/material.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 
 void main() {
-  sqfliteFfiInit();
-  databaseFactory = databaseFactoryFfi;
   runApp(const MyApp());
 }
 
@@ -20,7 +18,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.grey),
         useMaterial3: true,
       ),
-      home: const LoginScreen(), // Set HomePage from login_page.dart as the initial screen
+      home: const MyHomePage(title: "Home page",), // Set HomePage from login_page.dart as the initial screen
     );
   }
 }
@@ -56,20 +54,27 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
-              'You have pressed this button this many times:',
+              'Select parking lot:',
             ),
             Text(
-              '$_counter',
+              ' Which?  ',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        onPressed: _launchURL,
+        tooltip: 'Add Route?',
+        child: Icon(Icons.add_location_outlined),
       ),
     );
+  }
+}
+
+Future<void> _launchURL() async{
+  final Uri url=Uri.parse("https://www.atu.edu/map/docs/ATU-Campus-Map-2024.pdf");
+  if(!await launchUrl(url)) {
+    throw Exception('Could not load $url');
   }
 }

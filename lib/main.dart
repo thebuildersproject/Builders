@@ -130,9 +130,9 @@ class Choice {
 
 // List of choices for the popup menu
 const List<Choice> choices = <Choice>[
-  Choice(name: 'Home', icon: Icons.home),
-  Choice(name: 'Account', icon: Icons.person_2_outlined),
-  Choice(name: 'Admin', icon: Icons.lock),
+  Choice(name: 'Home', icon: Icons.home), //Go back to home page state
+  Choice(name: 'Account', icon: Icons.person_2_outlined), //Add Sign out Option
+  Choice(name: 'Admin', icon: Icons.lock), //Go to a page to add parking spots or remove
 ];
 
 // Launch URL function remains the same

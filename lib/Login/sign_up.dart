@@ -19,7 +19,6 @@ class _SignUpState extends State<SignUp> {
   bool isVisible = false;
 
   final DatabaseReference database = FirebaseDatabase.instance.ref();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

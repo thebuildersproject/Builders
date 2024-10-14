@@ -1,0 +1,21 @@
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    //dependencies {
+    //        classpath 'com.android.tools.build:gradle-kotlin:4.0.1'
+    //    }   I think I need to update gradle in some way to get openstreetmap to work on mobile
+}
+
+rootProject.buildDir = "../build"
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(":app")
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}

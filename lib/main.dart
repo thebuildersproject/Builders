@@ -1,7 +1,7 @@
-import 'package:buildingapp/Login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'package:buildingapp/Parking_Pages/yellow_parking.dart';
+import 'package:buildingapp/Parking_Pages/orange_parking.dart';
 
 void main() {
   runApp(const MyApp());
@@ -113,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: () {
           // Navigate to Orange parking page
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const OrangePage()));
+              MaterialPageRoute(builder: (context) => const OrangeParkingPage()));
         },
       ),
       ]),
@@ -142,28 +142,5 @@ Future<void> _launchURL() async {
     throw Exception('Could not load $url');
   }
 }
-// Dummy yellow parking page
-class YellowParkingPage extends StatelessWidget {
-  const YellowParkingPage({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Yellow Parking")),
-      body: const Center(child: Text("Yellow Parking Page")),
-    );
-  }
-}
 
-// Dummy orange parking page
-class OrangePage extends StatelessWidget {
-  const OrangePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Orange Parking")),
-      body: const Center(child: Text("Orange Parking Page")),
-    );
-  }
-}

@@ -45,6 +45,7 @@ dependencies:
   google_maps_flutter: ^2.1.7
   location: ^7.0.0
   flutter_svg: ^2.0.10+1
+  lottie: ^1.2.1
 
 dev_dependencies:
   flutter_test:

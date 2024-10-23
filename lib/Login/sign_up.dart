@@ -1,7 +1,7 @@
 import 'package:buildingapp/Login/login.dart';
+import 'package:buildingapp/SQLite/sqlite.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
+import 'package:buildingapp/JsonModels/users.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -18,7 +18,6 @@ class _SignUpState extends State<SignUp> {
   final formKey = GlobalKey<FormState>();
   bool isVisible = false;
 
-  final DatabaseReference database = FirebaseDatabase.instance.ref();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,10 +33,11 @@ class _SignUpState extends State<SignUp> {
                   const ListTile(
                     title: Text(
                       "Register New Account",
-                      style:
-                      TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
                     ),
                   ),
+
+                  // Username field
                   Container(
                     margin: const EdgeInsets.all(8),
                     padding: const EdgeInsets.symmetric(
@@ -61,6 +61,8 @@ class _SignUpState extends State<SignUp> {
                       ),
                     ),
                   ),
+
+                  // Password field
                   Container(
                     margin: const EdgeInsets.all(8),
                     padding: const EdgeInsets.symmetric(
@@ -95,6 +97,8 @@ class _SignUpState extends State<SignUp> {
                       ),
                     ),
                   ),
+
+                  // Confirm Password field
                   Container(
                     margin: const EdgeInsets.all(8),
                     padding: const EdgeInsets.symmetric(
@@ -131,7 +135,10 @@ class _SignUpState extends State<SignUp> {
                       ),
                     ),
                   ),
+
                   const SizedBox(height: 10),
+
+                  // Sign Up Button
                   Container(
                     height: 55,
                     width: MediaQuery.of(context).size.width * 9,
@@ -142,19 +149,34 @@ class _SignUpState extends State<SignUp> {
                       onPressed: () async {
                         if (formKey.currentState!.validate()) {
                           print("Form validated");
+
+                          final db = DatabaseHelper();
                           try {
-                            // Sign up user with Firebase
-                            await database.child('users').push().set({
-                              'username': username.text,
-                              'password': password.text,
-                            });
-                            // Signup successful, navigate to login page
-                            if (mounted) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const LoginScreen()),
-                              );
+                            int result = await db.signup(Users(
+                              usrName: username.text,
+                              usrPassword: password.text,
+                            ));
+                            print("Signup result: $result");
+
+                            if (result != -1) {
+                              // If the result is successful, navigate to the login screen
+                              if (mounted) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                      const LoginScreen()),
+                                );
+                              }
+                            } else {
+                              // Show an error message if signup fails
+                              if (mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Signup failed'),
+                                  ),
+                                );
+                              }
                             }
                           } catch (e) {
                             print("Error during signup: $e");
@@ -177,6 +199,8 @@ class _SignUpState extends State<SignUp> {
                       ),
                     ),
                   ),
+
+                  // Already have an account? Login button
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

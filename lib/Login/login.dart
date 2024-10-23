@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:buildingapp/Login/sign_up.dart';
+import 'package:buildingapp/SQLite/sqlite.dart';
 import 'package:buildingapp/main.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
-
-final DatabaseReference database = FirebaseDatabase.instance.ref();
+import 'package:buildingapp/JsonModels/users.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -18,6 +16,34 @@ class _LoginScreenState extends State<LoginScreen> {
   final password = TextEditingController();
   bool isVisible = false;
   bool isLoginTrue = false;
+  final db = DatabaseHelper();
+
+  login() async {
+    try {
+      var response = await db.login(
+        Users(usrName: username.text, usrPassword: password.text),
+      );
+
+      if (response) {
+        // If login is correct, navigate to the homepage
+        if (!mounted) return;
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const MyHomePage(title: 'Home Page')),
+        );
+      } else {
+        // If login fails, display error message
+        setState(() {
+          isLoginTrue = true;
+        });
+      }
+    } catch (e) {
+      print("Login error: $e");
+      setState(() {
+        isLoginTrue = true;
+      });
+    }
+  }
 
   final formKey = GlobalKey<FormState>();
 
@@ -33,14 +59,15 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 children: [
                   Image.asset(
-                    "lib/assets/ATU_icon.png", // Replace with your image path
+                    "lib/assets/ATU_icon.png",
                     width: 210,
                   ),
                   const SizedBox(height: 15),
+
+                  // Username field
                   Container(
                     margin: const EdgeInsets.all(8),
-                    padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       color: Colors.lightGreen.withOpacity(.2),
@@ -60,10 +87,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
+
+                  // Password field
                   Container(
                     margin: const EdgeInsets.all(8),
-                    padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       color: Colors.lightGreen.withOpacity(.2),
@@ -87,14 +115,15 @@ class _LoginScreenState extends State<LoginScreen> {
                               isVisible = !isVisible;
                             });
                           },
-                          icon: Icon(isVisible
-                              ? Icons.visibility
-                              : Icons.visibility_off),
+                          icon: Icon(isVisible ? Icons.visibility : Icons.visibility_off),
                         ),
                       ),
                     ),
                   ),
+
                   const SizedBox(height: 10),
+
+                  // Login Button
                   Container(
                     height: 55,
                     width: MediaQuery.of(context).size.width * 0.9,
@@ -103,44 +132,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: Colors.greenAccent,
                     ),
                     child: TextButton(
-                      onPressed: () async {
+                      onPressed: () {
                         if (formKey.currentState!.validate()) {
-                          try {
-                            final snapshot = await database
-                                .child('users')
-                                .orderByChild('username')
-                                .equalTo(username.text)
-                                .once();
-
-                            if (snapshot.snapshot.value != null) {
-                              final userData = Map<String, dynamic>.from(
-                                  snapshot.snapshot.value as Map);
-                              final userPassword =
-                              userData.values.first['password'];
-                              if (userPassword == password.text) {
-                                if (!mounted) return;
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                      const MyHomePage(title: 'Home Page')),
-                                );
-                              } else {
-                                setState(() {
-                                  isLoginTrue = true;
-                                });
-                              }
-                            } else {
-                              setState(() {
-                                isLoginTrue = true;
-                              });
-                            }
-                          } catch (e) {
-                            print("Login error: $e");
-                            setState(() {
-                              isLoginTrue = true;
-                            });
-                          }
+                          login();
                         }
                       },
                       child: const Text(
@@ -149,6 +143,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
+
+                  // Sign up button
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -166,6 +162,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ],
                   ),
+
+                  // Show error message for incorrect login
                   isLoginTrue
                       ? const Text(
                     "Username or password is incorrect",

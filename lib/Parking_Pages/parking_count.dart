@@ -2,83 +2,73 @@ import 'package:buildingapp/Login/account.dart';
 import 'package:buildingapp/Login/admin.dart';
 import 'package:buildingapp/main.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 
-class YellowParkingPage extends StatefulWidget {
-  const YellowParkingPage({super.key});
+class ParkingCountPage extends StatefulWidget {
+  const ParkingCountPage({super.key});
   @override
-  _YellowParkingPageState createState() => _YellowParkingPageState();
+  _CountPageState createState() => _CountPageState();  // Properly returning the state class
 }
-class _YellowParkingPageState extends State<YellowParkingPage> {
+
+class _CountPageState extends State<ParkingCountPage> {
   // Initial selected option from the popup menu
   Choice _selectedOption = choices[0];
 
-  // Function to handle selection of a choice
   void _select(Choice choice) {
     setState(() {
       _selectedOption = choice;
-
       if (choice.name == 'Home') {
-
+        //Navigate to homepage
         Navigator.push(
             context,
             MaterialPageRoute(builder: (context)=> MyHomePage(title: 'homepage',))
         );
-
       }else if(choice.name=='Account'){
-
         //Navigate to account page to sign out
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context)=> AccountPage()),
         );
       } else if (choice.name == 'Admin') {
-
         // Navigate to the admin page to add/remove parking spots
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => AdminPage()),
         );
       }
-    }
-    );
+    });
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar:
-      AppBar(
-          backgroundColor: Colors.amber,
-          title: const Text("Yellow Parking"),
-        actions: [
-      // Adding PopupMenuButton in the AppBar's actions
-      PopupMenuButton<Choice>(
-      onSelected: _select,
-        itemBuilder: (BuildContext context) {
-          return choices.map((Choice choice) {
-            return PopupMenuItem<Choice>(
-              value: choice,
-              child: Row(
-                children: [
-                  Icon(choice.icon),
-                  const SizedBox(width:10),
-                  Text(choice.name),
-                ],
-              )
-            );
-          }).toList();
-        },
-      ),
-      ],
-      ),
-      body: Center(
-        child: Lottie.network(
-    'https://lottie.host/94b5f01e-822f-4dad-a7dc-cbe39d47924b/ABJXAP3mKs.json'),
-    ),
-    );
+    Widget build(BuildContext context) {
+      return Scaffold(
+        appBar: AppBar(
+            title: const Text("Account Page"),
+            actions: [
+              // Adding PopupMenuButton in the AppBar's actions
+              PopupMenuButton<Choice>(
+                onSelected: _select,
+                itemBuilder: (BuildContext context) {
+                  return choices.map((Choice choice) {
+                    return PopupMenuItem<Choice>(
+                        value: choice,
+                        child: Row(
+                          children: [
+                            Icon(choice.icon),
+                            const SizedBox(width: 10),
+                            Text(choice.name),
+                          ],
+                        )
+                    );
+                  }).toList();
+                },
+              ),]
+        ),
+        body: const Center(
+          child: Text('Counter: '),
+        ),
+      );
+    }
   }
-}
 
 // Define the Choice class for the popup menu
 class Choice {
@@ -88,7 +78,6 @@ class Choice {
 }
 
 // List of choices for the popup menu
-
 const List<Choice> choices = <Choice>[
   Choice(name: 'Home', icon: Icons.home), //Go back to home page state
   Choice(name: 'Account', icon: Icons.person_2_outlined), //Add Sign out Option

@@ -1,4 +1,5 @@
 import 'package:buildingapp/Login/admin.dart';
+import 'package:buildingapp/main.dart';
 import 'package:flutter/material.dart';
 
 class AccountPage extends StatefulWidget {
@@ -18,10 +19,11 @@ class _AccountPageState extends State<AccountPage> {
       _selectedOption = choice;
 
       if (choice.name == 'Home') {
-
         // Navigate to Home Page
-        Navigator.pop(context);  // Assuming Home is the previous page
-
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context)=> MyHomePage(title: 'homepage',))
+        );
       }else if(choice.name=='Account'){
 
         //Navigate to account page to sign out
@@ -46,7 +48,7 @@ class _AccountPageState extends State<AccountPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Admin Page"),
+        title: const Text("Account Page"),
         actions: [
         // Adding PopupMenuButton in the AppBar's actions
         PopupMenuButton<Choice>(
@@ -68,7 +70,11 @@ class _AccountPageState extends State<AccountPage> {
       ),]
       ),
       body: const Center(
-        child: Text("Admin functionalities here"),
+        child: Text("Account"),
+        //Display Username/ for future: possible option to change it
+        //show password with option to change
+        //Must call backend to do these operations
+        //Add signing out function
       ),
     );
   }

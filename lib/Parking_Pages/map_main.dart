@@ -1,5 +1,6 @@
 import 'package:buildingapp/Login/account.dart';
 import 'package:buildingapp/Login/admin.dart';
+import 'package:buildingapp/main.dart';
 import 'package:flutter/material.dart';
 
 class MainParkingPage extends StatefulWidget {
@@ -20,8 +21,10 @@ class _MainParkingPageState extends State<MainParkingPage> {
 
       if (choice.name == 'Home') {
 
-        // Navigate to Home Page
-        Navigator.pop(context);  // Assuming Home is the previous page
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context)=> MyHomePage(title: 'homepage',))
+        );
 
       }else if(choice.name=='Account'){
 

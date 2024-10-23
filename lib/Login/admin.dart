@@ -1,3 +1,4 @@
+import 'package:buildingapp/main.dart';
 import 'package:flutter/material.dart';
 import 'package:buildingapp/Login/account.dart';
 
@@ -19,9 +20,10 @@ class _AdminPageState extends State<AdminPage> {
 
       if (choice.name == 'Home') {
 
-        // Navigate to Home Page
-        Navigator.pop(context);  // Assuming Home is the previous page
-
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context)=> MyHomePage(title: 'homepage',))
+        );
       }else if(choice.name=='Account'){
 
         //Navigate to account page to sign out

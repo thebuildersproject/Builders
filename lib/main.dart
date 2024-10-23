@@ -1,5 +1,7 @@
+import 'package:buildingapp/Login/account.dart';
+import 'package:buildingapp/Login/admin.dart';
+import 'package:buildingapp/Parking_Pages/map_main.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:buildingapp/Parking_Pages/yellow_parking.dart';
 import 'package:buildingapp/Parking_Pages/orange_parking.dart';
 
@@ -41,7 +43,30 @@ class _MyHomePageState extends State<MyHomePage> {
   void _select(Choice choice) {
     setState(() {
       _selectedOption = choice;
-    });
+
+      if (choice.name == 'Home') {
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context)=> MyHomePage(title: 'homepage',))
+        );
+
+      }else if(choice.name=='Account'){
+
+        //Navigate to account page to sign out
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context)=> AccountPage()),
+        );
+      } else if (choice.name == 'Admin') {
+
+        // Navigate to the admin page to add/remove parking spots
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => AdminPage()),
+        );
+      }
+    }
+    );
   }
 
   @override
@@ -71,27 +96,70 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'Select parking lot:',
+      body: Stack(
+          children: [
+            // Background image using Container and BoxDecoration
+            Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: const AssetImage("lib/assets/atu_background.jpg"), // Replace with your image path
+                  fit: BoxFit.cover, // Adjust to your preference
+                  colorFilter: ColorFilter.mode(
+                    Colors.black.withOpacity(0.3),
+                    BlendMode.dstATop,
+                  )
+                ),
+              ),
             ),
-            Text(
-              ' Which parking spot?  ',
-              style: Theme.of(context).textTheme.headlineMedium,
+            Center(
+              child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const SizedBox(height:100),
+              Text(
+                "Welcome Back",
+              style: TextStyle(
+                fontSize: 48,
+                fontWeight: FontWeight.bold,
+                color: Colors.amber,
+                letterSpacing: 1.5,
+                shadows: [
+                  Shadow(
+                    blurRadius: 10.0,
+                    color: Colors.black.withOpacity(0.3),
+                    offset: Offset(3,3),
+                  )
+                ],
+              ),
             ),
-            // Display the selected option from the popup menu
+          const SizedBox(height: 15,),
             Text(
-              'Selected: ${_selectedOption.name}',
-              style: Theme.of(context).textTheme.headlineSmall,
+              'Ready to Park?',
+               style: TextStyle(
+                 fontSize: 36,
+                 fontWeight: FontWeight.bold,
+                 color: Colors.amber,
+                 letterSpacing: 1.5,
+                 shadows: [
+                   Shadow(
+                     blurRadius: 10.0,
+                     color: Colors.black.withOpacity(0.3),
+                     offset: Offset(3,3),
+                   )
+                 ]
+               ),
             ),
           ],
         ),
       ),
+  ],
+      ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _launchURL,
+        onPressed: (){
+          Navigator.push(context,
+          MaterialPageRoute(builder: (context)=> const MainParkingPage())
+          );
+        },
         tooltip: 'Open Map',
         backgroundColor: Colors.amber,
         child: Icon(Icons.navigation_outlined),
@@ -141,11 +209,4 @@ const List<Choice> choices = <Choice>[
   Choice(name: 'Admin', icon: Icons.lock), //Go to a page to add parking spots or remove
 ];
 
-// Launch URL function remains the same
-Future<void> _launchURL() async {
-  final Uri url = Uri.parse("https://www.atu.edu/map/docs/ATU-Campus-Map-2024.pdf");
-  if (!await launchUrl(url)) {
-    throw Exception('Could not load $url');
-  }
-}
 

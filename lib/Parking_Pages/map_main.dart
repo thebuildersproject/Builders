@@ -1,14 +1,15 @@
+import 'package:buildingapp/Login/account.dart';
 import 'package:buildingapp/Login/admin.dart';
 import 'package:flutter/material.dart';
 
-class AccountPage extends StatefulWidget {
-  const AccountPage({super.key});
+class MainParkingPage extends StatefulWidget {
+  const MainParkingPage({super.key});
 
   @override
-  _AccountPageState createState() => _AccountPageState();  // Properly returning the state class
+  _MainParkingPageState createState() => _MainParkingPageState();
 }
 
-class _AccountPageState extends State<AccountPage> {
+class _MainParkingPageState extends State<MainParkingPage> {
   // Initial selected option from the popup menu
   Choice _selectedOption = choices[0];
 
@@ -41,40 +42,41 @@ class _AccountPageState extends State<AccountPage> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Admin Page"),
+        backgroundColor: Colors.green,
+        title: const Text("School Parking"),
         actions: [
-        // Adding PopupMenuButton in the AppBar's actions
-        PopupMenuButton<Choice>(
-        onSelected: _select,
-        itemBuilder: (BuildContext context) {
-          return choices.map((Choice choice) {
-            return PopupMenuItem<Choice>(
-                value: choice,
-                child: Row(
-                  children: [
-                    Icon(choice.icon),
-                    const SizedBox(width: 10),
-                    Text(choice.name),
-                  ],
-                )
-            );
-          }).toList();
-        },
-      ),]
+          // Adding PopupMenuButton in the AppBar's actions
+          PopupMenuButton<Choice>(
+            onSelected: _select,
+            itemBuilder: (BuildContext context) {
+              return choices.map((Choice choice) {
+                return PopupMenuItem<Choice>(
+                  value: choice,
+                  child: Row(
+                    children: [
+                      Icon(choice.icon),
+                      const SizedBox(width: 10),
+                      Text(choice.name),
+                    ],
+                  ),
+                );
+              }).toList();
+            },
+          ),
+        ],
       ),
       body: const Center(
-        child: Text("Admin functionalities here"),
+        //Main Body Add Map Functions here
+
+        child: Text("Main Parking Page"),
       ),
     );
   }
 }
-
-
 
 // Define the Choice class for the popup menu
 class Choice {

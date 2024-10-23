@@ -1,6 +1,5 @@
 import 'package:buildingapp/Login/admin.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 
 
 class OrangeParkingPage extends StatefulWidget {
@@ -79,7 +78,7 @@ class _OrangeParkingPageState extends State<OrangeParkingPage> {
 
 // List of choices for the popup menu
         const List<Choice> choices = <Choice>[
-        Choice(name: 'Home', icon: Icons.home), //Go back to home page state
-    Choice(name: 'Account', icon: Icons.person_2_outlined), //Add Sign out Option
-    Choice(name: 'Admin', icon: Icons.lock), //Go to a page to add/remove parking spots
+          Choice(name: 'Home', icon: Icons.home), //Go back to home page state
+          Choice(name: 'Account', icon: Icons.person_2_outlined), //Add Sign out Option
+          Choice(name: 'Admin', icon: Icons.lock), //Go to a page to add/remove parking spots
     ];

@@ -39,7 +39,13 @@ class _YellowParkingPageState extends State<YellowParkingPage> {
           return choices.map((Choice choice) {
             return PopupMenuItem<Choice>(
               value: choice,
-              child: Text(choice.name),
+              child: Row(
+                children: [
+                  Icon(choice.icon),
+                  const SizedBox(width:10),
+                  Text(choice.name),
+                ],
+              )
             );
           }).toList();
         },
@@ -62,8 +68,9 @@ class Choice {
 }
 
 // List of choices for the popup menu
+
 const List<Choice> choices = <Choice>[
   Choice(name: 'Home', icon: Icons.home), //Go back to home page state
   Choice(name: 'Account', icon: Icons.person_2_outlined), //Add Sign out Option
-  Choice(name: 'Admin', icon: Icons.lock), //Go to a page to add parking spots or remove
+  Choice(name: 'Admin', icon: Icons.lock), //Go to a page to add/remove parking spots
 ];

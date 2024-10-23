@@ -58,7 +58,13 @@ class _MyHomePageState extends State<MyHomePage> {
               return choices.map((Choice choice) {
                 return PopupMenuItem<Choice>(
                   value: choice,
-                  child: Text(choice.name),
+                  child: Row(
+                    children: [
+                      Icon(choice.icon),
+                      const SizedBox(width: 10),
+                      Text(choice.name),
+                    ],
+                  )
                 );
               }).toList();
             },
@@ -142,5 +148,4 @@ Future<void> _launchURL() async {
     throw Exception('Could not load $url');
   }
 }
-
 

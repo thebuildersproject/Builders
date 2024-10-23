@@ -1,11 +1,21 @@
+buildscript{
+    ext.kotlin_version = '2.0.21'
+    repositories{
+        google()
+        mavenCentral()
+        //jcenter()
+    }
+    dependencies { //classpath dependencies needed for OSM
+        classpath 'com.android.tools.build:gradle:7.3.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
 allprojects {
     repositories {
         google()
         mavenCentral()
     }
-    //dependencies {
-    //        classpath 'com.android.tools.build:gradle-kotlin:4.0.1'
-    //    }   I think I need to update gradle in some way to get openstreetmap to work on mobile
 }
 
 rootProject.buildDir = "../build"

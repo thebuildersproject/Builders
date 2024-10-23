@@ -35,8 +35,6 @@ dependencies:
   crypto: ^3.0.0
   sqflite_common_ffi: any
   url_launcher: 6.3.0
-  firebase_core: ^2.14.0
-  firebase_database: ^10.3.0
 
 
 

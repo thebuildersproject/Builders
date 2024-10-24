@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.buildingapp"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 35 //flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -24,11 +24,10 @@ android {
         applicationId = "com.example.buildingapp"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = 19 //minSdk = flutter.minSdkVersion
+        minSdk = 21 //minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
-
         multiDexEnabled = true
     }
 
@@ -46,6 +45,8 @@ flutter {
 }
 
 dependencies { //added for OSM
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "com.android.support:multidex:2.0.1"
+    implementation "org.osmdroid:osmdroid-android:6.1.20" //update osmdroid for android
+    //implementation "androidx.preference:preference-ktx:1.2.1" //refactor build.gradle and ios map style
 }

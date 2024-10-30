@@ -2,6 +2,7 @@ import 'package:buildingapp/Login/account.dart';
 import 'package:buildingapp/Login/admin.dart';
 import 'package:buildingapp/main.dart';
 import 'package:flutter/material.dart';
+import 'package:buildingapp/openStreetMap/osm.dart';
 
 class MainParkingPage extends StatefulWidget {
   const MainParkingPage({super.key});
@@ -72,11 +73,7 @@ class _MainParkingPageState extends State<MainParkingPage> {
           ),
         ],
       ),
-      body: const Center(
-        //Main Body Add Map Functions here
-
-        child: Text("Main Parking Page"),
-      ),
+      body: const OsmWidget(),
     );
   }
 }

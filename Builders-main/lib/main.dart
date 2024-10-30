@@ -1,12 +1,8 @@
-//import 'package:buildingapp/Login/login.dart';
+import 'package:buildingapp/Login/login.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_compass/flutter_compass.dart';
-import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
-import 'package:latlong2/latlong.dart';
-
+import 'package:url_launcher/url_launcher.dart';
+import 'package:buildingapp/openStreetMap/osm.dart';
 
 
 void main() {
@@ -48,8 +44,11 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: content2(),
-
+      body: Container(
+        width: double.infinity,
+          height: double.infinity,
+        child: const OsmWidget(),
+        ),
       floatingActionButton: FloatingActionButton(
         onPressed: _launchURL,
         tooltip: 'Add Route?',
@@ -57,71 +56,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-
-  Widget content2(){ //version from a video for a test
-    return FlutterMap(
-        options: MapOptions(
-          initialCenter: LatLng(35.293946396262506, -93.13533181225705),
-        initialZoom: 11,
-        interactionOptions:
-            const InteractionOptions(flags: ~InteractiveFlag.doubleTapDragZoom),
-        ),
-        children: [
-          openStreetMapTilLayer,
-        ]
-    );
-  }
-
-  TileLayer get openStreetMapTilLayer => TileLayer(
-    urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-    userAgentPackageName: 'dev.fleaflet.flutter_map.example',
-  );
-
-  Widget content(){ //version from flutter page
-    return OSMFlutter(
-      controller: SimpleMapController(
-          initPosition: GeoPoint(latitude: 35.293946396262506, longitude: -93.13533181225705 //35.293946396262506, -93.13533181225705 for AR tech,
-          ),
-          markerHome: const MarkerIcon(
-            icon: Icon(Icons.home),
-          ),
-      ),
-      osmOption: OSMOption(
-        userTrackingOption: UserTrackingOption(
-          enableTracking: true,
-          unFollowUser: false,
-        ),
-        zoomOption: ZoomOption(
-          initZoom: 8,
-          minZoomLevel: 3,
-          maxZoomLevel: 19,
-          stepZoom: 1.0,
-        ),
-        userLocationMarker: UserLocationMaker(
-          personMarker: MarkerIcon(
-            icon: Icon(
-              Icons.location_history_rounded,
-              color: Colors.red,
-              size: 48,
-            ),
-          ),
-          directionArrowMarker: MarkerIcon(
-            icon: Icon(
-              Icons.double_arrow,
-              size: 48,
-            ),
-          ),
-        ),
-        roadConfiguration: RoadOption(
-          roadColor: Colors.yellowAccent,
-        ),
-        /*markerOption: MarkerOption(
-                   marker settings go here
-                ),*/
-      ),
-    );
-  }
-
 }
 
 Future<void> _launchURL() async{

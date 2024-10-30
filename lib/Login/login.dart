@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:buildingapp/Login/sign_up.dart';
-import 'package:buildingapp/SQLite/sqlite.dart';
 import 'package:buildingapp/main.dart';
-import 'package:buildingapp/JsonModels/users.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "18934136027",
+    "firebase_url": "https://parking-db-b805f-default-rtdb.firebaseio.com",
+    "project_id": "parking-db-b805f",
+    "storage_bucket": "parking-db-b805f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:18934136027:android:0894797c7df0926cf9e0fe",
+        "android_client_info": {
+          "package_name": "com.example.buildingapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJmu626fgi1Hxx7ZRhgkv7JwKFCX1ZOg8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:18934136027:android:4b52fbca97cb8ef3f9e0fe",
+        "android_client_info": {
+          "package_name": "com.parkATU.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJmu626fgi1Hxx7ZRhgkv7JwKFCX1ZOg8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

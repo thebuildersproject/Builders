@@ -42,7 +42,7 @@ class _CountPageState extends State<ParkingCountPage> {
     Widget build(BuildContext context) {
       return Scaffold(
         appBar: AppBar(
-            title: const Text("Account Page"),
+            title: const Text("Parking Count"),
             actions: [
               // Adding PopupMenuButton in the AppBar's actions
               PopupMenuButton<Choice>(

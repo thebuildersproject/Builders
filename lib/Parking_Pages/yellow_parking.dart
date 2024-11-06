@@ -1,8 +1,8 @@
 import 'package:buildingapp/Login/account.dart';
 import 'package:buildingapp/Login/admin.dart';
+import 'package:buildingapp/Parking_Pages/parking_count.dart';
 import 'package:buildingapp/main.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 
 class YellowParkingPage extends StatefulWidget {
   const YellowParkingPage({super.key});
@@ -12,6 +12,24 @@ class YellowParkingPage extends StatefulWidget {
 class _YellowParkingPageState extends State<YellowParkingPage> {
   // Initial selected option from the popup menu
   Choice _selectedOption = choices[0];
+
+  // List of parking lots for Yellow Parking Page
+  final List<Map<String, dynamic>> yellowParkingLots = [
+    {
+      //Parking Lot information needs to be called on by backend
+      'name': 'Parking Lot A',
+      'description': 'First parking lot of Corely',
+      'maxSpots': 100,
+      'openSpots': 45,
+    },
+    {
+      'name': 'Parking Lot B',
+      'description': 'Second parking lot of Corely',
+      'maxSpots': 80,
+      'openSpots': 20,
+    },
+    // Add more parking lots if needed
+  ];
 
   // Function to handle selection of a choice
   void _select(Choice choice) {
@@ -72,10 +90,133 @@ class _YellowParkingPageState extends State<YellowParkingPage> {
       ),
       ],
       ),
-      body: Center(
-        child: Lottie.network(
-    'https://lottie.host/94b5f01e-822f-4dad-a7dc-cbe39d47924b/ABJXAP3mKs.json'),
-    ),
+        body: ListView.builder(
+        padding: EdgeInsets.all(8.0),
+    itemCount: yellowParkingLots.length,
+    itemBuilder: (context, index) {
+      final lot = yellowParkingLots[index];
+      return ParkingLotCard(
+        lotName: lot['name'],
+        description: lot['description'],
+        maxSpots: lot['maxSpots'],
+        openSpots: lot['openSpots'],
+      );},
+        ),
+    );
+  }
+}
+
+// Define the ParkingLotCard widget
+class ParkingLotCard extends StatelessWidget {
+  final String lotName;
+  final String description;
+  final int maxSpots;
+  final int openSpots;
+
+  const ParkingLotCard({
+    required this.lotName,
+    required this.description,
+    required this.maxSpots,
+    required this.openSpots,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.symmetric(vertical: 8.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            // Parking Lot Details Section
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    lotName,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    description,
+                    style: TextStyle(fontSize: 14),
+                  ),
+                ],
+              ),
+            ),
+
+            // Details Button
+            OutlinedButton(
+              onPressed: () {
+                _showDetailsDialog(context);
+              },
+              child: Text("Details"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showDetailsDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Parking Lot Details"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text("Max spots: $maxSpots"),
+              Text("Open spots: $openSpots"),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context); // Close details dialog
+                  _showConfirmationDialog(context);
+                },
+                child: Text("Park Here"),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _showConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Confirm Parking"),
+          content: Text("Are you sure you want to park here?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the confirmation dialog
+              },
+              child: Text("Cancel"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context); // Close confirmation dialog
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context)=> ParkingCountPage())
+                );              },
+              child: Text("Confirm"),
+            ),
+          ],
+        );
+      },
     );
   }
 }

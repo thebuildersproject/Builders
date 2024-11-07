@@ -25,7 +25,7 @@ android {
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = 21 //minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
+        targetSdk = 35 //flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
         multiDexEnabled = true
@@ -48,5 +48,4 @@ dependencies { //added for OSM
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "com.android.support:multidex:2.0.1"
     implementation "org.osmdroid:osmdroid-android:6.1.20" //update osmdroid for android
-    //implementation "androidx.preference:preference-ktx:1.2.1" //refactor build.gradle and ios map style
 }

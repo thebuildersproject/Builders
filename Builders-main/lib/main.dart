@@ -1,6 +1,5 @@
 import 'package:buildingapp/Login/login.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:buildingapp/openStreetMap/osm.dart';
 
@@ -8,7 +7,6 @@ import 'package:buildingapp/openStreetMap/osm.dart';
 void main() {
   runApp(const MyApp());
 }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -44,11 +42,9 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Container(
-        width: double.infinity,
-          height: double.infinity,
-        child: const OsmWidget(),
-        ),
+
+      body: const OsmWidget(),
+
       floatingActionButton: FloatingActionButton(
         onPressed: _launchURL,
         tooltip: 'Add Route?',
@@ -56,6 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+
 }
 
 Future<void> _launchURL() async{

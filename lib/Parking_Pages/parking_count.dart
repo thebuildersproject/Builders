@@ -4,7 +4,9 @@ import 'package:buildingapp/main.dart';
 import 'package:flutter/material.dart';
 
 class ParkingCountPage extends StatefulWidget {
-  const ParkingCountPage({super.key});
+  final String parkingLotName;
+  const ParkingCountPage({super.key, required this.parkingLotName});
+
   @override
   _CountPageState createState() => _CountPageState();  // Properly returning the state class
 }
@@ -63,8 +65,28 @@ class _CountPageState extends State<ParkingCountPage> {
                 },
               ),]
         ),
-        body: const Center(
-          child: Text('Counter: '),
+        body: Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+              decoration: BoxDecoration(
+                color: Colors.lightGreen.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              child: Text(
+                widget.parkingLotName,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black
+                )
+              ),
+            ),
+            const Center(
+              child: Text('Counter: '),
+            )
+          ]
         ),
       );
     }

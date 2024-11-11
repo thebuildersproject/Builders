@@ -210,8 +210,8 @@ class ParkingLotCard extends StatelessWidget {
                 Navigator.pop(context); // Close confirmation dialog
                 Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context)=> ParkingCountPage())
-                );              },
+                    MaterialPageRoute(builder: (context)=> ParkingCountPage(parkingLotName: "Parking Lot Name"))
+                );},
               child: Text("Confirm"),
             ),
           ],
@@ -229,7 +229,6 @@ class Choice {
 }
 
 // List of choices for the popup menu
-
 const List<Choice> choices = <Choice>[
   Choice(name: 'Home', icon: Icons.home), //Go back to home page state
   Choice(name: 'Account', icon: Icons.person_2_outlined), //Add Sign out Option

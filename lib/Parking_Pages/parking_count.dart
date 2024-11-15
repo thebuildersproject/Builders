@@ -2,6 +2,8 @@ import 'package:buildingapp/Login/account.dart';
 import 'package:buildingapp/Login/admin.dart';
 import 'package:buildingapp/main.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class ParkingCountPage extends StatefulWidget {
   final String parkingLotName;
@@ -14,6 +16,10 @@ class ParkingCountPage extends StatefulWidget {
 class _CountPageState extends State<ParkingCountPage> {
   // Initial selected option from the popup menu
   Choice _selectedOption = choices[0];
+
+  //Demo Values
+  final int maxSpots=45;
+  final int currentSpots=20;
 
   void _select(Choice choice) {
     setState(() {
@@ -42,7 +48,9 @@ class _CountPageState extends State<ParkingCountPage> {
 
   @override
     Widget build(BuildContext context) {
-      return Scaffold(
+    double fillPercentage = currentSpots /maxSpots;
+
+    return Scaffold(
         appBar: AppBar(
             title: const Text("Parking Count"),
             actions: [
@@ -83,9 +91,48 @@ class _CountPageState extends State<ParkingCountPage> {
                 )
               ),
             ),
-            const Center(
-              child: Text('Counter: '),
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Counter:'),
+                  SizedBox(height: 20), // Add some spacing between the text and the animation
+                  Lottie.network(
+                    'https://lottie.host/94b5f01e-822f-4dad-a7dc-cbe39d47924b/ABJXAP3mKs.json',
+                    width: 200, // Adjust width as needed
+                    height: 200, // Adjust height as needed
+                    fit: BoxFit.cover,
+                  ),
+                  SizedBox(height: 20,), //space between counter and animation
+                  CircularPercentIndicator(
+                    radius: 100.0,
+                    lineWidth:10.0,
+                    percent: fillPercentage,
+                    center: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "$currentSpots",
+                          style: TextStyle(
+                            fontSize: 40.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          "of $maxSpots spots",
+                          style: TextStyle(fontSize: 16.0, color:Colors.grey),
+                        ),
+                      ],
+                    ),
+                    progressColor: Colors.red,
+                    backgroundColor: Colors.grey.shade300,
+                    circularStrokeCap: CircularStrokeCap.round,
+                  ),
+                ],
+              ),
             )
+
           ]
         ),
       );

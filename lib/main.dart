@@ -105,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   image: const AssetImage("lib/assets/atu_background.jpg"), // Replace with your image path
                   fit: BoxFit.cover, // Adjust to your preference
                   colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(0.3),
+                    Colors.black.withOpacity(0.8),
                     BlendMode.dstATop,
                   )
                 ),
@@ -116,39 +116,6 @@ class _MyHomePageState extends State<MyHomePage> {
               mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     const SizedBox(height:100),
-              Text(
-                "Welcome Back",
-              style: TextStyle(
-                fontSize: 48,
-                fontWeight: FontWeight.bold,
-                color: Colors.amber,
-                letterSpacing: 1.5,
-                shadows: [
-                  Shadow(
-                    blurRadius: 10.0,
-                    color: Colors.black.withOpacity(0.3),
-                    offset: Offset(3,3),
-                  )
-                ],
-              ),
-            ),
-          const SizedBox(height: 15,),
-            Text(
-              'Ready to Park?',
-               style: TextStyle(
-                 fontSize: 36,
-                 fontWeight: FontWeight.bold,
-                 color: Colors.amber,
-                 letterSpacing: 1.5,
-                 shadows: [
-                   Shadow(
-                     blurRadius: 10.0,
-                     color: Colors.black.withOpacity(0.3),
-                     offset: Offset(3,3),
-                   )
-                 ]
-               ),
-            ),
           ],
         ),
       ),

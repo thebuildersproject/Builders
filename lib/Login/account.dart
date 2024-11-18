@@ -1,98 +1,127 @@
-import 'package:buildingapp/Login/admin.dart';
-import 'package:buildingapp/main.dart';
 import 'package:flutter/material.dart';
-
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
 
   @override
-  _AccountPageState createState() => _AccountPageState();  // Properly returning the state class
+  _AccountPageState createState() => _AccountPageState();
 }
 
 class _AccountPageState extends State<AccountPage> {
-  // Initial selected option from the popup menu
-  Choice _selectedOption = choices[0];
+  // Text Editing Controllers
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _parkingTagController = TextEditingController();
 
-  // Function to handle selection of a choice
-  void _select(Choice choice) {
-    setState(() {
-      _selectedOption = choice;
-
-      if (choice.name == 'Home') {
-        // Navigate to Home Page
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context)=> MyHomePage(title: 'homepage',))
-        );
-      }else if(choice.name=='Account'){
-
-        //Navigate to account page to sign out
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context)=> AccountPage()),
-        );
-      } else if (choice.name == 'Admin') {
-
-        // Navigate to the admin page to add/remove parking spots
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => AdminPage()),
-        );
-      }
-    }
+  // Sign out function
+  void _signOut() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Account Page"),
-        actions: [
-        // Adding PopupMenuButton in the AppBar's actions
-        PopupMenuButton<Choice>(
-        onSelected: _select,
-        itemBuilder: (BuildContext context) {
-          return choices.map((Choice choice) {
-            return PopupMenuItem<Choice>(
-                value: choice,
-                child: Row(
-                  children: [
-                    Icon(choice.icon),
-                    const SizedBox(width: 10),
-                    Text(choice.name),
-                  ],
-                )
-            );
-          }).toList();
-        },
-      ),]
       ),
-      body: const Center(
-        child: Text("Account"),
-        //Display Username/ for future: possible option to change it
-        //show password with option to change
-        //Must call backend to do these operations
-        //Add signing out function
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Account Details",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 20),
+            // Username Field
+            TextField(
+              controller: _usernameController,
+              decoration: const InputDecoration(
+                labelText: "Username",
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 16),
+            // Password Field
+            TextField(
+              controller: _passwordController,
+              decoration: const InputDecoration(
+                labelText: "Password",
+                border: OutlineInputBorder(),
+              ),
+              obscureText: true, // Hides the password
+            ),
+            const SizedBox(height: 16),
+            // Email Field
+            TextField(
+              controller: _emailController,
+              decoration: const InputDecoration(
+                labelText: "Email",
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 16),
+            // Parking Tag Field
+            TextField(
+              controller: _parkingTagController,
+              decoration: const InputDecoration(
+                labelText: "Parking Color Tag",
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 30),
+            // Edit Button
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  // For now, just print values to console
+                  print("Username: ${_usernameController.text}");
+                  print("Password: ${_passwordController.text}");
+                  print("Email: ${_emailController.text}");
+                  print("Parking Tag: ${_parkingTagController.text}");
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Details updated successfully!")),
+                  );
+                },
+                child: const Text("Edit"),
+              ),
+            ),
+            const Spacer(),
+            // Sign Out Button
+            Center(
+              child: ElevatedButton(
+                onPressed: _signOut,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red, // Sign-out button color
+                ),
+                child: const Text("Sign Out"),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
+class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
 
-
-// Define the Choice class for the popup menu
-class Choice {
-  const Choice({required this.name, required this.icon});
-  final String name;
-  final IconData icon;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Login Page")),
+      body: const Center(
+        child: Text("Login Page Implementation Goes Here"),
+      ),
+    );
+  }
 }
-
-// List of choices for the popup menu
-const List<Choice> choices = <Choice>[
-  Choice(name: 'Home', icon: Icons.home), //Go back to home page state
-  Choice(name: 'Account', icon: Icons.person_2_outlined), //Add Sign out Option
-  Choice(name: 'Admin', icon: Icons.lock), //Go to a page to add/remove parking spots
-];

@@ -30,10 +30,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  sqflite: ^2.0.0+4
   path: ^1.8.0
   crypto: ^3.0.0
-  sqflite_common_ffi: any
   url_launcher: ^6.3.1
   percent_indicator: ^4.2.2
 

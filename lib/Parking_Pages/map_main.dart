@@ -50,7 +50,7 @@ class _MainParkingPageState extends State<MainParkingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.white10,
         title: const Text("School Parking"),
         actions: [
           // Adding PopupMenuButton in the AppBar's actions
@@ -72,6 +72,13 @@ class _MainParkingPageState extends State<MainParkingPage> {
             },
           ),
         ],
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1.0),
+          child: Container(
+            color: Colors.grey,
+            height: 1.0,
+          )
+        )
       ),
       body: const OsmWidget(),
     );

@@ -99,26 +99,24 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Stack(
           children: [
             // Background image using Container and BoxDecoration
-            Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: const AssetImage("lib/assets/atu_background.jpg"), // Replace with your image path
-                  fit: BoxFit.cover, // Adjust to your preference
-                  colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(0.8),
-                    BlendMode.dstATop,
-                  )
+            Center(
+              child: SizedBox(
+                width: 400, // Adjust the width as needed
+                height: 400, // Adjust the height as needed
+                child: Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: const AssetImage("lib/assets/ATU_LOGO.png"),
+                      fit: BoxFit.contain, // Use BoxFit.contain to fit the image within the container
+                      colorFilter: ColorFilter.mode(
+                        Colors.white10.withOpacity(0.8), // changed color filler to a clear(ish) color, black was clashing to heavily
+                        BlendMode.dstATop,
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
-            Center(
-              child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const SizedBox(height:100),
-          ],
-        ),
-      ),
+            )
   ],
       ),
       floatingActionButton: FloatingActionButton(

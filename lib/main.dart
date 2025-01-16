@@ -73,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.white10,
         title: Text(widget.title),
         actions: [
           // Adding PopupMenuButton in the AppBar's actions
@@ -95,6 +95,13 @@ class _MyHomePageState extends State<MyHomePage> {
             },
           ),
         ],
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1.0),
+          child: Container(
+            color: Colors.grey,
+            height: 1.0,
+          ),
+        ),
       ),
       body: Stack(
           children: [

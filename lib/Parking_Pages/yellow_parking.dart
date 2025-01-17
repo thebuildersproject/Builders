@@ -210,7 +210,7 @@ class ParkingLotCard extends StatelessWidget {
                 Navigator.pop(context); // Close confirmation dialog
                 Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context)=> ParkingCountPage(parkingLotName: "Parking Lot Name"))
+                    MaterialPageRoute(builder: (context)=> ParkingCountPage(parkingLotName: "ParkingLotName"))
                 );},
               child: Text("Confirm"),
             ),

@@ -73,8 +73,10 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: Text(widget.title),
+        backgroundColor: Colors.white,
+        title: Text(widget.title,
+        style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
         actions: [
           // Adding PopupMenuButton in the AppBar's actions
           PopupMenuButton<Choice>(
@@ -95,17 +97,70 @@ class _MyHomePageState extends State<MyHomePage> {
             },
           ),
         ],
-      ),
-      body: Stack(
+        bottom: PreferredSize(
+            preferredSize:const Size.fromHeight(60.0),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ElevatedButton.icon(
+                      onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> const AccountPage()));
+                      },
+              icon: const Icon(Icons.person_outline),
+                  label: const Text("Profile"),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                  ),
+            ),
+                  //Home Button
+    ElevatedButton.icon(
+    onPressed: (){
+    Navigator.push(context, MaterialPageRoute(builder: (context)=> const MyHomePage(title: 'homepage')));
+    },
+    icon: const Icon(Icons.home),
+    label: const Text("Home"),
+    style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.blue,
+    foregroundColor: Colors.white,
+                        ),
+                      ),
+    //Parking Button
+    ElevatedButton.icon(
+    onPressed: (){
+    Navigator.push(
+    context,
+    MaterialPageRoute(
+    builder: (context) => const YellowParkingPage()));
+    },
+    icon: const Icon(Icons.local_parking),
+    label: const Text("Parking"),
+    style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.orange,
+    foregroundColor: Colors.white,
+        ),
+    ),
+                ]
+              ),
+              ),
+            )),
+    body: Stack(
+
           children: [
+
+
             // Background image using Container and BoxDecoration
             Container(
+              width: 400,
+              height: 400,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: const AssetImage("lib/assets/atu_background.jpg"), // Replace with your image path
-                  fit: BoxFit.cover, // Adjust to your preference
+                  fit: BoxFit.contain, // Adjust to your preference
                   colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(0.8),
+                    Colors.white10.withOpacity(0.8),
                     BlendMode.dstATop,
                   )
                 ),
@@ -128,8 +183,9 @@ class _MyHomePageState extends State<MyHomePage> {
           );
         },
         tooltip: 'Open Map',
-        backgroundColor: Colors.amber,
-        child: Icon(Icons.navigation_outlined),
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+        child: Icon(Icons.my_location),
       ),
       //Position of Floating Button
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -141,22 +197,6 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-      IconButton(
-      icon: const Icon(Icons.directions_car),
-        onPressed: () {
-          // Navigate to Yellow parking page
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const YellowParkingPage()));
-        },
-      ),
-      IconButton(
-        icon: const Icon(Icons.airport_shuttle),
-        onPressed: () {
-          // Navigate to Orange parking page
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const OrangeParkingPage()));
-        },
-      ),
       ]),
     ));
   }

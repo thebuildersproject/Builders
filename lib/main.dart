@@ -2,6 +2,8 @@ import 'package:buildingapp/Login/account.dart';
 import 'package:flutter/material.dart';
 import 'package:buildingapp/Parking_Pages/yellow_parking.dart';
 import 'package:buildingapp/Parking_Pages/red_parking.dart';
+import 'package:buildingapp/Parking_Pages/orange_parking.dart';
+import 'package:buildingapp/Parking_Pages/all_parking.dart';
 
 void main() {
   runApp(const MyApp());
@@ -53,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       );
     } else if (_currentPage == 'Parking') {
-      bodyContent = const YellowParkingPage();
+      bodyContent = const AllParkingSpotsPage();
     } else if (_currentPage == 'Account') {
       bodyContent = const AccountPage();
     } else {

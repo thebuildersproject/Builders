@@ -1,238 +1,209 @@
-import 'package:buildingapp/Login/account.dart';
-import 'package:buildingapp/Login/admin.dart';
-import 'package:buildingapp/Parking_Pages/parking_count.dart';
-import 'package:buildingapp/main.dart';
 import 'package:flutter/material.dart';
 
 class OrangeParkingPage extends StatefulWidget {
   const OrangeParkingPage({super.key});
 
   @override
-  _OrangeParkingPageState createState() => _OrangeParkingPageState();
+  State<OrangeParkingPage> createState() => _OrangeParkingPageState();
 }
 
 class _OrangeParkingPageState extends State<OrangeParkingPage> {
-  // Initial selected option from the popup menu
-  Choice _selectedOption = choices[0];
+  // Tabs and dropdown data
+  final Map<String, String> tabDescriptions = {
+    'Orange': 'Parking in the back portion of the school.',
+    'Blue': 'Parking spots near stadium suite housing and across visiting team dressing facility.',
+    'Green': 'Parking spots for the University Commons Apartments. Near the Energy Center.',
+  };
 
-  // List of parking lots for Yellow Parking Page
-  final List<Map<String, dynamic>> orangeParkingLots = [
-    {
-      //Parking Lot information needs to be called on by backend
-      'name': 'Parking Lot AA',
-      'description': 'Parking Lot by Brown Hall',
-      'maxSpots': 100,
-      'openSpots': 45,
+  final Map<String, Map<String, List<Map<String, dynamic>>>> parkingData = {
+    'Orange': {
+      'Orange': [
+        {
+          'name': 'Paine Residence Parking',
+          'description': 'Generic description',
+          'maxSpots': 50,
+          'openSpots': 46,
+        },
+      ],
     },
-    {
-      'name': 'Parking Lot BB',
-      'description': 'Third parking lot of Corely',
-      'maxSpots': 80,
-      'openSpots': 20,
+    'Blue': {
+      'Blue': [
+        {
+          'name': 'Stadium Suite Parking',
+          'description': 'Generic description',
+          'maxSpots': 25,
+          'openSpots': 1,
+        },
+        {
+          'name': 'Williamson Hall Extra Parking',
+          'description': 'Generic description',
+          'maxSpots': 60,
+          'openSpots': 12,
+        },
+      ],
     },
-    // Add more parking lots if needed
-  ];
+    'Green': {
+      'Green': [
+        {
+          'name': 'Commons Main Parking',
+          'description': 'Main lot located across the street from the Energy Center',
+          'maxSpots': 100,
+          'openSpots': 32,
+        },
+        {
+          'name': 'Jones Residence Parking A',
+          'description': 'Main parking of Jones residence',
+          'maxSpots': 40,
+          'openSpots': 30,
+        },
+        {
+          'name': 'Jones Residence Parking B',
+          'description': 'Jones residence parking across Corely building',
+          'maxSpots': 10,
+          'openSpots': 9,
+        },
+        {
+          'name': 'Jones Residence Parking C',
+          'description': 'Parking beside residence outdoor recreation area',
+          'maxSpots': 20,
+          'openSpots': 2,
+        },
+      ],
+    },
+  };
 
-  // Function to handle selection of a choice
-  void _select(Choice choice) {
-    setState(() {
-      _selectedOption = choice;
+  // Currently selected tab and dropdown
+  String _selectedTab = 'Orange';
+  String _selectedSection = 'Orange';
 
-      if (choice.name == 'Home') {
-
-        Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context)=> MyHomePage(title: 'homepage',))
+  void _showTabDescription(BuildContext context, String description) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: Text(description),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Close'),
+            ),
+          ],
         );
-
-      }else if(choice.name=='Account'){
-
-        //Navigate to account page
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context)=>AccountPage())
-        );
-      }
-      else if (choice.name == 'Admin') {
-
-        // Navigate to the admin page to add/remove parking spots
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => AdminPage()),
-        );
-    }
-    }
+      },
     );
   }
-
-      @override
-      Widget build(BuildContext context) {
-        return Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.orange,
-            title: const Text("Orange Parking"),
-            actions: [
-              // Adding PopupMenuButton in the AppBar's actions
-              PopupMenuButton<Choice>(
-                onSelected: _select,
-                itemBuilder: (BuildContext context) {
-                  return choices.map((Choice choice) {
-                    return PopupMenuItem<Choice>(
-                      value: choice,
-                      child: Row(
-                        children: [
-                          Icon(choice.icon),
-                          const SizedBox(width: 10),
-                          Text(choice.name),
-                        ],
-                      ),
-                    );
-                  }).toList();
-                },
-              ),
-            ],
-          ),
-          body: ListView.builder(
-            padding: EdgeInsets.all(8.0),
-            itemCount: orangeParkingLots.length,
-            itemBuilder: (context, index) {
-              final lot = orangeParkingLots[index];
-              return ParkingLotCard(
-                lotName: lot['name'],
-                description: lot['description'],
-                maxSpots: lot['maxSpots'],
-                openSpots: lot['openSpots'],
-              );},
-          ),
-        );
-      }
-    }
-
-// Define the ParkingLotCard widget
-class ParkingLotCard extends StatelessWidget {
-  final String lotName;
-  final String description;
-  final int maxSpots;
-  final int openSpots;
-
-  const ParkingLotCard({
-    required this.lotName,
-    required this.description,
-    required this.maxSpots,
-    required this.openSpots,
-  });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.symmetric(vertical: 8.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            // Parking Lot Details Section
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    lotName,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 4),
-                  Text(
-                    description,
-                    style: TextStyle(fontSize: 14),
-                  ),
-                ],
-              ),
-            ),
+    final List<Map<String, dynamic>> selectedLots = parkingData[_selectedTab]?[_selectedSection] ?? [];
 
-            // Details Button
-            OutlinedButton(
-              onPressed: () {
-                _showDetailsDialog(context);
-              },
-              child: Text("Details"),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _showDetailsDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Parking Lot Details"),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
+    return Column(
+      children: [
+        // Title with an icon
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("Max spots: $maxSpots"),
-              Text("Open spots: $openSpots"),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context); // Close details dialog
-                  _showConfirmationDialog(context);
-                },
-                child: Text("Park Here"),
+              const Text(
+                'Residential Parking',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
+              const SizedBox(width: 8.0),
+              const Icon(Icons.bedroom_child_outlined, size: 28),
             ],
           ),
-        );
-      },
-    );
-  }
-
-  void _showConfirmationDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Confirm Parking"),
-          content: Text("Are you sure you want to park here?"),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context); // Close the confirmation dialog
-              },
-              child: Text("Cancel"),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context); // Close confirmation dialog
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context)=> ParkingCountPage(parkingLotName: "Parking Lot Name"))
-                );              },
-              child: Text("Confirm"),
-            ),
-          ],
-        );
-      },
+        ),
+        // Tabs with information icons
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: tabDescriptions.keys.map((tab) {
+              return Row(
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        _selectedTab = tab;
+                        _selectedSection = tab; // Update dropdown to match the tab
+                      });
+                    },
+                    child: Text(
+                      tab,
+                      style: TextStyle(
+                        color: _selectedTab == tab ? Colors.blue : Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.info_outline),
+                    onPressed: () => _showTabDescription(context, tabDescriptions[tab]!),
+                  ),
+                ],
+              );
+            }).toList(),
+          ),
+        ),
+        // Dropdown to filter sections
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: DropdownButton<String>(
+            value: _selectedSection,
+            onChanged: (value) {
+              setState(() {
+                _selectedSection = value!;
+              });
+            },
+            isExpanded: true,
+            items: parkingData[_selectedTab]!.keys.map((section) {
+              return DropdownMenuItem(
+                value: section,
+                child: Text(
+                  section,
+                  style: const TextStyle(fontSize: 18),
+                ),
+              );
+            }).toList(),
+          ),
+        ),
+        // Parking lot list
+        Expanded(
+          child: ListView.builder(
+            padding: const EdgeInsets.all(8.0),
+            itemCount: selectedLots.length,
+            itemBuilder: (context, index) {
+              final lot = selectedLots[index];
+              return Card(
+                margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: ListTile(
+                  title: Text(
+                    lot['name'],
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: lot['description'].isNotEmpty
+                      ? Text(lot['description'])
+                      : null,
+                  trailing: Text(
+                    "${lot['openSpots']}/${lot['maxSpots']} open",
+                    style:  TextStyle(color: lot['openSpots'] == 0 ? Colors.red : Colors.green),
+                  ),
+                  onTap: () {
+                    // Show parking details or perform an action
+                  },
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
-
-// Define the Choice class for the popup menu
-        class Choice {
-        const Choice({required this.name, required this.icon});
-        final String name;
-        final IconData icon;
-        }
-
-// List of choices for the popup menu
-        const List<Choice> choices = <Choice>[
-          Choice(name: 'Home', icon: Icons.home), //Go back to home page state
-          Choice(name: 'Account', icon: Icons.person_2_outlined), //Add Sign out Option
-          Choice(name: 'Admin', icon: Icons.lock), //Go to a page to add/remove parking spots
-    ];

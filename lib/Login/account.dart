@@ -91,7 +91,7 @@ class _AccountPageState extends State<AccountPage> {
                     const SnackBar(content: Text("Details updated successfully!")),
                   );
                 },
-                child: const Text("Edit"),
+                child: const Text("Update Profile"),
               ),
             ),
             const Spacer(),

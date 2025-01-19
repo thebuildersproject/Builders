@@ -1,9 +1,9 @@
 import 'package:buildingapp/Login/account.dart';
-import 'package:buildingapp/Login/admin.dart';
-import 'package:buildingapp/Parking_Pages/map_main.dart';
 import 'package:flutter/material.dart';
 import 'package:buildingapp/Parking_Pages/yellow_parking.dart';
+import 'package:buildingapp/Parking_Pages/red_parking.dart';
 import 'package:buildingapp/Parking_Pages/orange_parking.dart';
+import 'package:buildingapp/Parking_Pages/all_parking.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,165 +20,102 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.grey),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: "Homepage"), // Set HomePage from login_page.dart as the initial screen
+      home: const MyHomePage(), // Set HomePage as the initial screen
     );
   }
 }
 
-// Keep the MyHomePage class for navigation purposes
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // Initial selected option from the popup menu
-  Choice _selectedOption = choices[0];
+  // Current page state to determine the body content
+  String _currentPage = 'Home';
 
-  // Function to handle selection of a choice
-  void _select(Choice choice) {
+  // Function to change the page state
+  void _changePage(String page) {
     setState(() {
-      _selectedOption = choice;
-
-      if (choice.name == 'Home') {
-        Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context)=> MyHomePage(title: 'homepage',))
-        );
-
-      }else if(choice.name=='Account'){
-
-        //Navigate to account page to sign out
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context)=> AccountPage()),
-        );
-      } else if (choice.name == 'Admin') {
-
-        // Navigate to the admin page to add/remove parking spots
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => AdminPage()),
-        );
-      }
-    }
-    );
+      _currentPage = page;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    // Determine the content of the body based on the current page
+    Widget bodyContent;
+    if (_currentPage == 'Home') {
+      bodyContent = const Center(
+        child: Text(
+          "Welcome to the Parking App!",
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+      );
+    } else if (_currentPage == 'Parking') {
+      bodyContent = const AllParkingSpotsPage();
+    } else if (_currentPage == 'Account') {
+      bodyContent = const AccountPage();
+    } else {
+      bodyContent = const Center(
+        child: Text("Unknown Page"),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white10,
-        title: Text(widget.title),
-        actions: [
-          // Adding PopupMenuButton in the AppBar's actions
-          PopupMenuButton<Choice>(
-            onSelected: _select,
-            itemBuilder: (BuildContext context) {
-              return choices.map((Choice choice) {
-                return PopupMenuItem<Choice>(
-                  value: choice,
-                  child: Row(
-                    children: [
-                      Icon(choice.icon),
-                      const SizedBox(width: 10),
-                      Text(choice.name),
-                    ],
-                  )
-                );
-              }).toList();
-            },
-          ),
-        ],
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.0),
-          child: Container(
-            color: Colors.grey,
-            height: 1.0,
-          ),
+        backgroundColor: Colors.white,
+        title: const Text(
+          "Parking App",
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
         ),
       ),
-      body: Stack(
-          children: [
-            // Background image using Container and BoxDecoration
-            Center(
-              child: SizedBox(
-                width: 400, // Adjust the width as needed
-                height: 400, // Adjust the height as needed
-                child: Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: const AssetImage("lib/assets/ATU_LOGO.png"),
-                      fit: BoxFit.contain, // Use BoxFit.contain to fit the image within the container
-                      colorFilter: ColorFilter.mode(
-                        Colors.white10.withOpacity(0.8), // changed color filler to a clear(ish) color, black was clashing to heavily
-                        BlendMode.dstATop,
-                      ),
-                    ),
+      body: Column(
+        children: [
+          // Buttons at the top
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton.icon(
+                  onPressed: () => _changePage('Account'),
+                  icon: const Icon(Icons.person_outline),
+                  label: const Text("Profile"),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
                   ),
                 ),
-              ),
-            )
-  ],
+                ElevatedButton.icon(
+                  onPressed: () => _changePage('Home'),
+                  icon: const Icon(Icons.home),
+                  label: const Text("Home"),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
+                  ),
+                ),
+                ElevatedButton.icon(
+                  onPressed: () => _changePage('Parking'),
+                  icon: const Icon(Icons.local_parking),
+                  label: const Text("Parking"),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.orange,
+                    foregroundColor: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Dynamic body content
+          Expanded(
+            child: bodyContent,
+          ),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          Navigator.push(context,
-          MaterialPageRoute(builder: (context)=> const MainParkingPage())
-          );
-        },
-        tooltip: 'Open Map',
-        backgroundColor: Colors.amber,
-        child: Icon(Icons.navigation_outlined),
-      ),
-      //Position of Floating Button
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-
-      //Navigation Bar
-      bottomNavigationBar: BottomAppBar(
-      shape: const CircularNotchedRectangle(),
-      notchMargin: 5.0,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-      IconButton(
-      icon: const Icon(Icons.directions_car),
-        onPressed: () {
-          // Navigate to Yellow parking page
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const YellowParkingPage()));
-        },
-      ),
-      IconButton(
-        icon: const Icon(Icons.airport_shuttle),
-        onPressed: () {
-          // Navigate to Orange parking page
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const OrangeParkingPage()));
-        },
-      ),
-      ]),
-    ));
+    );
   }
 }
-
-// Define the Choice class for the popup menu
-class Choice {
-  const Choice({required this.name, required this.icon});
-  final String name;
-  final IconData icon;
-}
-
-// List of choices for the popup menu
-const List<Choice> choices = <Choice>[
-  Choice(name: 'Home', icon: Icons.home), //Go back to home page state
-  Choice(name: 'Account', icon: Icons.person_2_outlined), //Add Sign out Option
-  Choice(name: 'Admin', icon: Icons.lock), //Go to a page to add parking spots or remove
-];
-
-

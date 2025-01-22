@@ -20,13 +20,13 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.grey),
         useMaterial3: true,
       ),
-      home: const MyHomePage(), // Set HomePage as the initial screen
+      home: const MyHomePage(title: 'home',), // Set HomePage as the initial screen
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+  const MyHomePage({super.key, required String title});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -43,6 +43,20 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  // Determine which parking page to show based on the time
+  Widget _getParkingPage() {
+    final DateTime now = DateTime.now();
+    final int currentHour = now.hour;
+
+    // Show YellowParkingPage from 8:00 AM to 5:00 PM
+    if (currentHour >= 8 && currentHour < 17) {
+      return const YellowParkingPage();
+    }
+
+    // Default to AllParkingSpotsPage outside this time range
+    return const AllParkingSpotsPage();
+  }
+
   @override
   Widget build(BuildContext context) {
     // Determine the content of the body based on the current page
@@ -55,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       );
     } else if (_currentPage == 'Parking') {
-      bodyContent = const AllParkingSpotsPage();
+      bodyContent = _getParkingPage(); // Dynamically get the parking page
     } else if (_currentPage == 'Account') {
       bodyContent = const AccountPage();
     } else {

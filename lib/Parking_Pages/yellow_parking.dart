@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:buildingapp/Parking_Pages/parking_count.dart';
 
 class YellowParkingPage extends StatefulWidget {
   const YellowParkingPage({super.key});
@@ -142,7 +143,13 @@ class _YellowParkingPageState extends State<YellowParkingPage> {
                     style: const TextStyle(color: Colors.green),
                   ),
                   onTap: () {
-                    // Show parking details or perform an action
+                    // Show dialog on tap
+                    _showNavigateDialog(
+                      context,
+                      lot['name'],
+                      lot['maxSpots'],
+                      lot['openSpots'],
+                    );
                   },
                 ),
               );
@@ -150,6 +157,60 @@ class _YellowParkingPageState extends State<YellowParkingPage> {
           ),
         ),
       ],
+    );
+  }
+
+  // Function to show the navigate dialog
+  void _showNavigateDialog(
+      BuildContext context,
+      String parkingLotName,
+      int maxSpots,
+      int openSpots,
+      ) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          contentPadding: const EdgeInsets.all(16.0),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Align(
+                alignment: Alignment.topRight,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context); // Close dialog
+                  },
+                  child: const Icon(Icons.close, size: 24),
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              Text(
+                'Navigate to $parkingLotName?',
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16.0),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context); // Close the dialog
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ParkingCountPage(
+                        parkingLotName: parkingLotName,
+                        maxSpots: maxSpots,
+                        openSpots: openSpots,
+                      ),
+                    ),
+                  );
+                },
+                child: const Text('Navigate'),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

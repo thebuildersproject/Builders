@@ -1,188 +1,240 @@
-import 'package:buildingapp/Login/account.dart';
-import 'package:buildingapp/Login/admin.dart';
-import 'package:buildingapp/main.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'map_main.dart';
+import 'package:buildingapp/main.dart';
+import 'package:buildingapp/Parking_Pages/map_main.dart';
 
 class ParkingCountPage extends StatefulWidget {
   final String parkingLotName;
-  const ParkingCountPage({super.key, required this.parkingLotName});
+  final int maxSpots;
+  final int openSpots;
+
+  const ParkingCountPage({
+    super.key,
+    required this.parkingLotName,
+    required this.maxSpots,
+    required this.openSpots,
+  });
 
   @override
-  _CountPageState createState() => _CountPageState(); // Properly returning the state class
+  State<ParkingCountPage> createState() => _ParkingCountPageState();
 }
 
-class _CountPageState extends State<ParkingCountPage> {
-  // Initial selected option from the popup menu
-  Choice _selectedOption = choices[0];
+class _ParkingCountPageState extends State<ParkingCountPage> {
+  late List<bool> spotStatus;
 
-  // Demo Values
-  final int maxSpots = 45;
-  final int currentSpots = 20;
+  @override
+  void initState() {
+    super.initState();
+    _generateSpotStatus();
+  }
 
-  void _select(Choice choice) {
-    setState(() {
-      _selectedOption = choice;
-      if (choice.name == 'Home') {
-        // Navigate to homepage
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const MyHomePage(title: 'homepage')),
-        );
-      } else if (choice.name == 'Account') {
-        // Navigate to account page to sign out
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const AccountPage()),
-        );
-      } else if (choice.name == 'Admin') {
-        // Navigate to the admin page to add/remove parking spots
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const AdminPage()),
-        );
-      }
-    });
+  // Generate dynamic spot status for a 10-spot layout
+  void _generateSpotStatus() {
+    final int filledSpots = ((widget.maxSpots - widget.openSpots) / widget.maxSpots * 10).floor();
+    spotStatus = List.generate(
+      10,
+          (index) => index < filledSpots, // Fill the first `filledSpots` slots
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    double fillPercentage = currentSpots / maxSpots;
-
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Parking Count"),
-        actions: [
-          // Adding PopupMenuButton in the AppBar's actions
-          PopupMenuButton<Choice>(
-            onSelected: _select,
-            itemBuilder: (BuildContext context) {
-              return choices.map((Choice choice) {
-                return PopupMenuItem<Choice>(
-                  value: choice,
-                  child: Row(
-                    children: [
-                      Icon(choice.icon),
-                      const SizedBox(width: 10),
-                      Text(choice.name),
-                    ],
-                  ),
-                );
-              }).toList();
-            },
-          ),
-        ],
+        backgroundColor: Colors.white,
+        automaticallyImplyLeading: false, // Removes the back arrow
+        title: const Text(
+          "Parking App",
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
       ),
       body: Column(
         children: [
-          Container(
-            margin: const EdgeInsets.all(16.0),
-            padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
-            decoration: BoxDecoration(
-              color: Colors.lightGreen.withOpacity(0.3),
-              borderRadius: BorderRadius.circular(20.0),
-            ),
-            child: Text(
-              widget.parkingLotName,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
-          ),
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+          // Buttons at the top
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('Counter:'),
-                const SizedBox(height: 20), // Add some spacing between the text and the animation
-                Lottie.network(
-                  'https://lottie.host/94b5f01e-822f-4dad-a7dc-cbe39d47924b/ABJXAP3mKs.json',
-                  width: 200, // Adjust width as needed
-                  height: 200, // Adjust height as needed
-                  fit: BoxFit.cover,
-                ),
-                const SizedBox(height: 20), // Space between counter and animation
-                CircularPercentIndicator(
-                  radius: 100.0,
-                  lineWidth: 10.0,
-                  percent: fillPercentage,
-                  center: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "$currentSpots",
-                        style: const TextStyle(
-                          fontSize: 40.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MyHomePage(title: 'Profile'),
                       ),
-                      Text(
-                        "of $maxSpots spots",
-                        style: const TextStyle(fontSize: 16.0, color: Colors.grey),
-                      ),
-                    ],
+                          (route) => false,
+                    );
+                  },
+                  icon: const Icon(Icons.person_outline),
+                  label: const Text("Profile"),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
                   ),
-                  progressColor: Colors.red,
-                  backgroundColor: Colors.grey.shade300,
-                  circularStrokeCap: CircularStrokeCap.round,
+                ),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MyHomePage(title: 'Home'),
+                      ),
+                          (route) => false,
+                    );
+                  },
+                  icon: const Icon(Icons.home),
+                  label: const Text("Home"),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
+                  ),
+                ),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MyHomePage(title: 'Parking'),
+                      ),
+                          (route) => false,
+                    );
+                  },
+                  icon: const Icon(Icons.local_parking),
+                  label: const Text("Parking"),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.orange,
+                    foregroundColor: Colors.white,
+                  ),
                 ),
               ],
+            ),
+          ),
+          // Title with parking lot name
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  widget.parkingLotName,
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(width: 8.0),
+                const Icon(Icons.directions_car, size: 28),
+              ],
+            ),
+          ),
+          // Parking lot layout in scrollable view
+          Expanded(
+            child: SingleChildScrollView(
+              child: Stack(
+                children: [
+                  // "C" shaped border
+                  Container(
+                    padding: const EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        left: BorderSide(color: Colors.black, width: 3.0),
+                        top: BorderSide(color: Colors.black, width: 3.0),
+                        bottom: BorderSide(color: Colors.black, width: 3.0),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Left column
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: List.generate(5, (index) {
+                            return Container(
+                              width: 80,
+                              height: 80,
+                              margin: const EdgeInsets.symmetric(vertical: 8.0),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              child: spotStatus[index]
+                                  ? Image.asset('lib/assets/car_icon.png')
+                                  : const SizedBox(),
+                            );
+                          }),
+                        ),
+                        const SizedBox(width: 32.0), // Gap between columns
+                        // Right column
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: List.generate(5, (index) {
+                            return Container(
+                              width: 80,
+                              height: 80,
+                              margin: const EdgeInsets.symmetric(vertical: 8.0),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              child: spotStatus[index + 5]
+                                  ? Image.asset('lib/assets/car_icon.png')
+                                  : const SizedBox(),
+                            );
+                          }),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Entry text
+                  Positioned(
+                    top: 8,
+                    right: 16,
+                    child: const Text(
+                      "Entry",
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  // Exit text
+                  Positioned(
+                    bottom: 8,
+                    right: 16,
+                    child: const Text(
+                      "Exit",
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: GestureDetector(
-          onTap: () {
+      // Floating button at the bottom
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ElevatedButton(
+          onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const MainParkingPage()),
+              MaterialPageRoute(
+                builder: (context) => const MainParkingPage(),
+              ),
             );
           },
-          child: Container(
-            height: 60.0,
-            decoration: BoxDecoration(
-              color: Colors.green,
-              borderRadius: BorderRadius.circular(30.0), // Makes it oval-shaped
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.green[900],
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text(
-                  "Navigate",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(width: 10),
-                Icon(Icons.directions, color: Colors.white, size: 24),
-              ],
-            ),
+            minimumSize: const Size(double.infinity, 50), // Full-width button
+          ),
+          child: const Text(
+            "Navigate to Main Map",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
           ),
         ),
       ),
     );
   }
 }
-
-// Define the Choice class for the popup menu
-class Choice {
-  const Choice({required this.name, required this.icon});
-  final String name;
-  final IconData icon;
-}
-
-// List of choices for the popup menu
-const List<Choice> choices = <Choice>[
-  Choice(name: 'Home', icon: Icons.home), // Go back to home page state
-  Choice(name: 'Account', icon: Icons.person_2_outlined), // Add Sign out Option
-  Choice(name: 'Admin', icon: Icons.lock), // Go to a page to add/remove parking spots
-];

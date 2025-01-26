@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:buildingapp/Parking_Pages/yellow_parking.dart';
 import 'package:buildingapp/Parking_Pages/orange_parking.dart';
 import 'package:buildingapp/Parking_Pages/red_parking.dart';
+import 'package:buildingapp/Parking_Pages/parking_count.dart';
 
 class AllParkingSpotsPage extends StatelessWidget {
   const AllParkingSpotsPage({super.key});
@@ -37,9 +38,9 @@ class AllParkingSpotsPage extends StatelessWidget {
         body: const TabBarView(
           children: [
             YellowParkingPage(), // Reuse your Yellow parking page
-            RedParkingPage(),    // Reuse your Red parking page
+            RedParkingPage(), // Reuse your Red parking page
             OrangeParkingPage(), // Reuse your Orange parking page
-            GuestsHandicapParkingPage(), // New Guests/Handicap parking page
+            GuestsHandicapParkingPage(), // Updated Guests/Handicap parking page
           ],
         ),
       ),
@@ -70,6 +71,7 @@ class GuestsHandicapParkingPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        // Title with an icon
         Container(
           padding: const EdgeInsets.all(16.0),
           alignment: Alignment.center,
@@ -88,6 +90,7 @@ class GuestsHandicapParkingPage extends StatelessWidget {
             ],
           ),
         ),
+        // Parking lot list
         Expanded(
           child: ListView.builder(
             padding: const EdgeInsets.all(8.0),
@@ -107,14 +110,43 @@ class GuestsHandicapParkingPage extends StatelessWidget {
                   subtitle: Text(lot['description']),
                   trailing: Text(
                     "${lot['openSpots']}/${lot['maxSpots']} open",
-                    style: const TextStyle(color: Colors.green),
+                    style: TextStyle(
+                      color: lot['openSpots'] == 0 ? Colors.red : Colors.green,
+                    ),
                   ),
+                  onTap: () {
+                    _navigateToParkingCount(
+                      context,
+                      lot['name'],
+                      lot['maxSpots'],
+                      lot['openSpots'],
+                    );
+                  },
                 ),
               );
             },
           ),
         ),
       ],
+    );
+  }
+
+  // Function to navigate to the ParkingCountPage
+  void _navigateToParkingCount(
+      BuildContext context,
+      String parkingLotName,
+      int maxSpots,
+      int openSpots,
+      ) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ParkingCountPage(
+          parkingLotName: parkingLotName,
+          maxSpots: maxSpots,
+          openSpots: openSpots,
+        ),
+      ),
     );
   }
 }

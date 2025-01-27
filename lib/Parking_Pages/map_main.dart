@@ -1,93 +1,82 @@
-import 'package:buildingapp/Login/account.dart';
-import 'package:buildingapp/Login/admin.dart';
-import 'package:buildingapp/main.dart';
 import 'package:flutter/material.dart';
-import 'package:buildingapp/openStreetMap/osm.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MainParkingPage extends StatefulWidget {
-  const MainParkingPage({super.key});
+  final String parkingLotName;
+
+  const MainParkingPage({super.key, required this.parkingLotName});
 
   @override
   _MainParkingPageState createState() => _MainParkingPageState();
 }
 
 class _MainParkingPageState extends State<MainParkingPage> {
-  // Initial selected option from the popup menu
-  Choice _selectedOption = choices[0];
+  late GoogleMapController mapController;
 
-  // Function to handle selection of a choice
-  void _select(Choice choice) {
-    setState(() {
-      _selectedOption = choice;
+  final LatLng _center = const LatLng(35.2938, -93.1361); // Arkansas Tech University
 
-      if (choice.name == 'Home') {
-
-        Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context)=> MyHomePage(title: 'homepage',))
-        );
-
-      }else if(choice.name=='Account'){
-
-        //Navigate to account page to sign out
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context)=> AccountPage()),
-        );
-      } else if (choice.name == 'Admin') {
-
-        // Navigate to the admin page to add/remove parking spots
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => AdminPage()),
-        );
-      }
-    }
-    );
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: const Text("School Parking"),
-        actions: [
-          // Adding PopupMenuButton in the AppBar's actions
-          PopupMenuButton<Choice>(
-            onSelected: _select,
-            itemBuilder: (BuildContext context) {
-              return choices.map((Choice choice) {
-                return PopupMenuItem<Choice>(
-                  value: choice,
-                  child: Row(
-                    children: [
-                      Icon(choice.icon),
-                      const SizedBox(width: 10),
-                      Text(choice.name),
-                    ],
+      body: Stack(
+        children: [
+          // Google Map
+          GoogleMap(
+            onMapCreated: _onMapCreated,
+            initialCameraPosition: CameraPosition(
+              target: _center,
+              zoom: 15.0,
+            ),
+          ),
+          // Bottom green bar with parking lot name and close button
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              color: Colors.green[900],
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Parking lot name
+                  Text(
+                    widget.parkingLotName,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
-                );
-              }).toList();
-            },
+                  // Circular exit button
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context); // Exit to the previous page
+                    },
+                    child: Container(
+                      width: 40,
+                      height: 40,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.yellow,
+                      ),
+                      child: const Center(
+                        child: Icon(
+                          Icons.close,
+                          color: Colors.white,
+                          size: 24.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
-      body: const OsmWidget(),
     );
   }
 }
-
-// Define the Choice class for the popup menu
-class Choice {
-  const Choice({required this.name, required this.icon});
-  final String name;
-  final IconData icon;
-}
-
-// List of choices for the popup menu
-const List<Choice> choices = <Choice>[
-  Choice(name: 'Home', icon: Icons.home), //Go back to home page state
-  Choice(name: 'Account', icon: Icons.person_2_outlined), //Add Sign out Option
-  Choice(name: 'Admin', icon: Icons.lock), //Go to a page to add/remove parking spots
-];

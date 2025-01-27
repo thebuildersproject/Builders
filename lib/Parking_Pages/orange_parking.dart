@@ -259,7 +259,7 @@ class _OrangeParkingPageState extends State<OrangeParkingPage> {
                     ),
                   );
                 },
-                child: const Text('Navigate'),
+                child: const Text('View Lot?'),
               ),
             ],
           ),

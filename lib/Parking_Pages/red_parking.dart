@@ -171,7 +171,7 @@ class _RedParkingPageState extends State<RedParkingPage> {
                     ),
                   );
                 },
-                child: const Text('Navigate'),
+                child: const Text('View Lot?'),
               ),
             ],
           ),

@@ -205,7 +205,7 @@ class _YellowParkingPageState extends State<YellowParkingPage> {
                     ),
                   );
                 },
-                child: const Text('Navigate'),
+                child: const Text('View Lot?'),
               ),
             ],
           ),

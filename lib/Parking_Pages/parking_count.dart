@@ -218,7 +218,7 @@ class _ParkingCountPageState extends State<ParkingCountPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const MainParkingPage(),
+                builder: (context) => MainParkingPage(parkingLotName:  widget.parkingLotName),
               ),
             );
           },

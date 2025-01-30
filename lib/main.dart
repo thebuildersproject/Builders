@@ -1,8 +1,8 @@
 import 'package:buildingapp/Login/account.dart';
 import 'package:flutter/material.dart';
 import 'package:buildingapp/Parking_Pages/yellow_parking.dart';
-import 'package:buildingapp/Parking_Pages/red_parking.dart';
-import 'package:buildingapp/Parking_Pages/orange_parking.dart';
+import 'package:buildingapp/Parking_Pages/red_parking.dart'; //Extra parking spot dart files
+import 'package:buildingapp/Parking_Pages/orange_parking.dart'; //Other Parking spot files
 import 'package:buildingapp/Parking_Pages/all_parking.dart';
 
 void main() {

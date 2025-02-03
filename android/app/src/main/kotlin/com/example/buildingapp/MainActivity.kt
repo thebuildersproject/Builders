@@ -1,4 +1,4 @@
-package com.example.buildingapp
+package thebuilders.parkATU.com
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "581649493459",
+    "project_id": "thebuilders-4e5a5",
+    "storage_bucket": "thebuilders-4e5a5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:581649493459:android:570b157ae5664629eb1326",
+        "android_client_info": {
+          "package_name": "thebuilders.parkATU.com"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKw-5preb03pBCfNDqsLlvRUajkgOA-JY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

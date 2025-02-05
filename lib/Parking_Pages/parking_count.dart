@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:buildingapp/main.dart';
-import 'package:buildingapp/Parking_Pages/map_main.dart';
+import 'package:buildingapp/Parking_Pages/map_Main.dart';
 
 class ParkingCountPage extends StatefulWidget {
   final String parkingLotName;

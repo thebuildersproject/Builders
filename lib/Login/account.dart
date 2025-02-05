@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:buildingapp/firebase_options.dart';
 import 'package:buildingapp/Login/login.dart';
 
 class AccountPage extends StatefulWidget {

@@ -29,7 +29,8 @@ class _ParkingCountPageState extends State<ParkingCountPage> {
 
   // Generate dynamic spot status for a 10-spot layout
   void _generateSpotStatus() {
-    final int filledSpots = ((widget.maxSpots - widget.openSpots) / widget.maxSpots * 10).floor();
+    final int filledSpots =
+    ((widget.maxSpots - widget.openSpots) / widget.maxSpots * 10).floor();
     spotStatus = List.generate(
       10,
           (index) => index < filledSpots, // Fill the first `filledSpots` slots
@@ -94,7 +95,8 @@ class _ParkingCountPageState extends State<ParkingCountPage> {
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const MyHomePage(title: 'Parking'),
+                        builder: (context) =>
+                        const MyHomePage(title: 'Parking'),
                       ),
                           (route) => false,
                     );
@@ -185,56 +187,208 @@ class _ParkingCountPageState extends State<ParkingCountPage> {
                       ],
                     ),
                   ),
-                  // Entry text
-                  Positioned(
-                    top: 8,
-                    right: 16,
-                    child: const Text(
-                      "Entry",
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  // Exit text
-                  Positioned(
-                    bottom: 8,
-                    right: 16,
-                    child: const Text(
-                      "Exit",
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                  ),
                 ],
+              ),
+            ),
+          ),
+          // 🚀 New Buttons Below Parking Map
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+            child: ElevatedButton(
+              onPressed: () {
+                _showParkingTicketPopup(context);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.amber[700], // Gold color
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                minimumSize: const Size(double.infinity, 50), // Full-width button
+              ),
+              child: const Text(
+                "View Parking Ticket?",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        MainParkingPage(parkingLotName: widget.parkingLotName),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green[900],
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                minimumSize: const Size(double.infinity, 50), // Full-width button
+              ),
+              child: const Text(
+                "Navigate to Main Map",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
               ),
             ),
           ),
         ],
       ),
-      // Floating button at the bottom
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MainParkingPage(parkingLotName:  widget.parkingLotName),
-              ),
-            );
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.green[900],
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0),
+    );
+  }
+
+  /// **🚀 Parking Ticket Pop-up (Styled UI)**
+  void _showParkingTicketPopup(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+              color: Colors.yellow[700],
+              borderRadius: BorderRadius.circular(20.0),
             ),
-            minimumSize: const Size(double.infinity, 50), // Full-width button
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // Parking Lot Name & Address
+                Container(
+                  padding: const EdgeInsets.all(16.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                        "(${widget.parkingLotName})",
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 4),
+                      const Text(
+                        "Parking Lot Address",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.black54,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 10),
+
+                // Vehicle Information
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                  decoration: BoxDecoration(
+                    color: Colors.blueGrey[50],
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "VEHICLE",
+                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black54),
+                      ),
+                      SizedBox(height: 2),
+                      Text(
+                        "2018 Toyota Camry",
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 10),
+
+                // Open Spots & Max Spots
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                  decoration: BoxDecoration(
+                    color: Colors.blueGrey[50],
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "PARKING STATUS",
+                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black54),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        "${widget.openSpots} open / ${widget.maxSpots} total",
+                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 10),
+
+                // Slot Information
+                Container(
+                  padding: const EdgeInsets.all(12.0),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.blue[100],
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      "Slot A01",
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+
+                // Close Button
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                  ),
+                  child: const Text(
+                    "Close Ticket",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            ),
           ),
-          child: const Text(
-            "Navigate to Main Map",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-          ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

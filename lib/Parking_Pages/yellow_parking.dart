@@ -13,27 +13,27 @@ class _YellowParkingPageState extends State<YellowParkingPage> {
   final Map<String, List<Map<String, dynamic>>> parkingData = {
     'Brown': [
       {
-        'name': 'Parking Lot A',
-        'description': '',
+        'name': 'Brownie Butter Lot',
+        'description': 'Brown main parking lot ready for Browning!',
         'maxSpots': 40,
         'openSpots': 20,
       },
       {
-        'name': 'Parking Lot B',
-        'description': '',
+        'name': 'Bursting Brownies Lot',
+        'description': 'Burst into this small lot before it iss filled',
         'maxSpots': 15,
         'openSpots': 7,
       },
     ],
     'Corely': [
       {
-        'name': 'Parking Lot A',
-        'description': 'First parking lot of Corely',
+        'name': 'Corely C',
+        'description': 'Furthest parking lot of Corely',
         'maxSpots': 100,
         'openSpots': 45,
       },
       {
-        'name': 'Parking Lot B',
+        'name': 'Corely D',
         'description': 'Second parking lot of Corely',
         'maxSpots': 80,
         'openSpots': 20,

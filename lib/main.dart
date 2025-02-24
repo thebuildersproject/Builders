@@ -201,7 +201,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: const Icon(Icons.home),
                   label: const Text("Home"),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
+                    backgroundColor: Colors.black,
                     foregroundColor: Colors.white,
                   ),
                 ),
@@ -210,7 +210,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: const Icon(Icons.local_parking),
                   label: const Text("Parking"),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
+                    backgroundColor: Colors.yellow,
                     foregroundColor: Colors.white,
                   ),
                 ),

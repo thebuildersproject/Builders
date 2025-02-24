@@ -48,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => const MyHomePage(title: 'Home')),
-                (route) => false, // Remove all previous routes
+                (route) => false,
           );
         });
       } else {

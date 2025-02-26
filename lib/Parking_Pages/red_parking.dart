@@ -19,7 +19,7 @@ class _RedParkingPageState extends State<RedParkingPage> {
         'openSpots': 30,
       },
     ],
-    'Coliseum': [
+    'Colosseum': [
       {
         'name': 'Parking Lot A',
         'description': 'Closest to Coliseum',

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:buildingapp/Parking_Pages/parking_count.dart';
 
 class YellowParkingPage extends StatefulWidget {
@@ -9,94 +10,30 @@ class YellowParkingPage extends StatefulWidget {
 }
 
 class _YellowParkingPageState extends State<YellowParkingPage> {
-  // Parking lot data
-  final Map<String, List<Map<String, dynamic>>> parkingData = {
-    'Brown': [
-      {
-        'name': 'Brownie Butter Lot',
-        'description': 'Brown main parking lot ready for Browning!',
-        'maxSpots': 40,
-        'openSpots': 20,
-      },
-      {
-        'name': 'Bursting Brownies Lot',
-        'description': 'Burst into this small lot before it iss filled',
-        'maxSpots': 15,
-        'openSpots': 7,
-      },
-    ],
-    'Corely': [
-      {
-        'name': 'Corely C',
-        'description': 'Furthest parking lot of Corely',
-        'maxSpots': 100,
-        'openSpots': 45,
-      },
-      {
-        'name': 'Corely D',
-        'description': 'Second parking lot of Corely',
-        'maxSpots': 80,
-        'openSpots': 20,
-      },
-    ],
-    'Colosseum': [
-      {
-        'name': 'Parking Lot A',
-        'description': '',
-        'maxSpots': 50,
-        'openSpots': 30,
-      },
-      {
-        'name': 'Parking Lot B',
-        'description': '',
-        'maxSpots': 35,
-        'openSpots': 25,
-      },
-    ],
-    'Rothwell': [
-      {
-        'name': 'Parking Lot A',
-        'description': 'In front of Rothwell',
-        'maxSpots': 200,
-        'openSpots': 22,
-      },
-      {
-        'name': 'Parking Lot B',
-        'description': 'Beside pasture',
-        'maxSpots': 20,
-        'openSpots': 0,
-      },
-    ],
-  };
-
-  // Current selected section
   String _selectedSection = 'Brown';
+  final List<String> sections = ['Brown', 'Colosseum', 'Corely', 'Rothwell'];
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> selectedLots = parkingData[_selectedSection]!;
-
     return Column(
       children: [
-        // Title with an icon
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                'Commuter Parking',
+                'Yellow Parking',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(width: 8.0),
-              const Icon(Icons.directions_car, size: 28),
+              const Icon(Icons.local_parking, size: 28),
             ],
           ),
         ),
-        // Dropdown to filter sections
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: DropdownButton<String>(
@@ -107,7 +44,7 @@ class _YellowParkingPageState extends State<YellowParkingPage> {
               });
             },
             isExpanded: true,
-            items: parkingData.keys.map((section) {
+            items: sections.map((section) {
               return DropdownMenuItem(
                 value: section,
                 child: Text(
@@ -118,40 +55,69 @@ class _YellowParkingPageState extends State<YellowParkingPage> {
             }).toList(),
           ),
         ),
-        // Parking lot list
         Expanded(
-          child: ListView.builder(
-            padding: const EdgeInsets.all(8.0),
-            itemCount: selectedLots.length,
-            itemBuilder: (context, index) {
-              final lot = selectedLots[index];
-              return Card(
-                margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: ListTile(
-                  title: Text(
-                    lot['name'],
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: lot['description'].isNotEmpty
-                      ? Text(lot['description'])
-                      : null,
-                  trailing: Text(
-                    "${lot['openSpots']}/${lot['maxSpots']} open",
-                    style: const TextStyle(color: Colors.green),
-                  ),
-                  onTap: () {
-                    // Show dialog on tap
-                    _showNavigateDialog(
-                      context,
-                      lot['name'],
-                      lot['maxSpots'],
-                      lot['openSpots'],
-                    );
-                  },
-                ),
+          child: StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('plates')
+                .where('tagColor', isEqualTo: 'yellow')
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                return const Center(child: Text('No yellow-tagged plates found.'));
+              }
+              final plateDocs = snapshot.data!.docs; // Instead of first, use the list
+              return StreamBuilder<QuerySnapshot>(
+                stream: plateDocs.isNotEmpty
+                    ? plateDocs.first.reference.collection(_selectedSection).snapshots()
+                    : null,
+                builder: (context, lotSnapshot) {
+                  if (lotSnapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (!lotSnapshot.hasData || lotSnapshot.data!.docs.isEmpty) {
+                    return const Center(child: Text('No parking lots available.'));
+                  }
+                  final lots = lotSnapshot.data!.docs;
+                  return ListView.builder(
+                    padding: const EdgeInsets.all(8.0),
+                    itemCount: lots.length,
+                    itemBuilder: (context, index) {
+                      final lot = lots[index].data() as Map<String, dynamic>;
+                      return Card(
+                        margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: ListTile(
+                          title: Text(
+                            lot['lotName'] ?? 'Unknown Lot',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: lot['description'] != null
+                              ? Text(lot['description'])
+                              : null,
+                          trailing: Text(
+                            "${lot['openSpots'] ?? 0}/${lot['maxSpots'] ?? 0} open",
+                            style: TextStyle(
+                              color: (lot['openSpots'] ?? 0) == 0 ? Colors.red : Colors.green,
+                            ),
+                          ),
+                          onTap: () {
+                            _showNavigateDialog(
+                              context,
+                              lot['lotName'] ?? 'Unknown Lot',
+                              lot['maxSpots'] ?? 0,
+                              lot['openSpots'] ?? 0,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  );
+                },
               );
             },
           ),
@@ -160,7 +126,6 @@ class _YellowParkingPageState extends State<YellowParkingPage> {
     );
   }
 
-  // Function to show the navigate dialog
   void _showNavigateDialog(
       BuildContext context,
       String parkingLotName,
@@ -179,7 +144,7 @@ class _YellowParkingPageState extends State<YellowParkingPage> {
                 alignment: Alignment.topRight,
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.pop(context); // Close dialog
+                    Navigator.pop(context);
                   },
                   child: const Icon(Icons.close, size: 24),
                 ),
@@ -193,7 +158,7 @@ class _YellowParkingPageState extends State<YellowParkingPage> {
               const SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pop(context); // Close the dialog
+                  Navigator.pop(context);
                   Navigator.push(
                     context,
                     MaterialPageRoute(

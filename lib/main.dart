@@ -68,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final DateTime now = DateTime.now();
     final int currentHour = now.hour;
     return currentHour >= 8 && currentHour < 17
-        ? const OrangeParkingPage()
+        ? const YellowParkingPage()
         : const AllParkingSpotsPage();
   }
 
